@@ -9,11 +9,11 @@ Params:
 Returns:
   Dictionary of struct object's fields and values
 =#
-function struct_to_dict(s)
+function structToDict(s)
   return Dict(key => getfield(s, key) for key in propertynames(s))
 end
 
-#= 
+#=
 Returns path's length
 Params:
   @path: Vector{<:Integer} of visited nodes in a given path
@@ -21,7 +21,7 @@ Params:
 Returns:
   Sum of distances between nodes in given path
 =#
-function obj_function(path::Vector{T}, weights::AbstractMatrix{Float64}) where T<:Integer
+function objFunction(path::Vector{T}, weights::AbstractMatrix{Float64}) where T<:Integer
   @assert isperm(path) "Invalid path provided"
   result = length(path) != size(weights, 1) ? zero(Float64) : weights[path[end], path[1]]
   for i = 1:length(path)-1
@@ -31,7 +31,7 @@ function obj_function(path::Vector{T}, weights::AbstractMatrix{Float64}) where T
 end
 
 #=
-Create a tuple of X and Y coords arrays 
+Create a tuple of X and Y coords arrays
 Array of X coords = result[1]
 Array of Y coords = result[1]
 Params:
@@ -45,32 +45,79 @@ function getPathCoordsVector(path::Vector{T}, coords::AbstractMatrix{Float64}) w
   x = Vector{Integer}();
   y = Vector{Integer}();
   for node in path
-    append!(x, coords[node, :][1])
-    append!(y, coords[node, :][2])
+    node_coords = coords[node, :]
+    append!(x, node_coords[1])
+    append!(y, node_coords[2])
   end
   return (x, y)
+end
+
+#=
+Asks user for data direcory path and file name
+Returns:
+  A TSP struct read from file from path
+=#
+function openTSPFile()
+  println("Hello! Please provide full path to your data folder: ")
+  path = chomp(readline())
+  for (root, dirs, files) in walkdir(path)
+    global options = files
+  end
+  filter!(s->occursin(r".tsp", s), options)
+  for el in options
+    for i in 1:4 print(el, "   ") end
+    println()
+  end
+  println()
+  println("Choose a file by writing a full file name:  ")
+  response = chomp(readline())
+  return readTSP(path * "/" * response)
+end
+
+#=
+Returns a random [1..n] permutation of given length
+Params:
+  @tsp_data: {Dict} TSP dataset
+Returns:
+  Permutation of TSP dataset nodes
+=#
+function randomPath(tsp_data::Dict)
+  return shuffle(collect(1:tsp_data[:dimension]))
+end
+
+#=
+Runs test_num tests on given tsp_data dictionary.
+Requires test_func function to compute path for current dataset
+Params:
+  @tsp_data: {Dict} TSP dataset
+  @test_func: {Function} function used to calculate a path for current TSP nodes
+  @tests_num: number of performed tests
+=#
+function TSPtest(tsp_data::Dict, test_func::Function, tests_num::Int)
+  for i in 1:tests_num
+    println("\n\n================TEST $i================")
+    computed_path = test_func(tsp_data)
+    # Test info:
+    println("Dataset name: ", tsp_data[:name])
+    println("Nodes: ", tsp_data[:dimension])
+    println("Path: ", computed_path)
+    println("Distance: ", objFunction(computed_path, tsp_data[:weights]))
+    # Plotting
+    println("Plot:")
+    coords = getPathCoordsVector(computed_path, tsp_data[:nodes])
+    plt = lineplot(coords[1], coords[2]; title="Current path", height=20, width=40)
+    println(plt)
+    println("=============END OF TEST $i=============")
+  end
 end
 
 #=
 Main program function
 =#
 function main()
-  # TODO: Make CLI for choosing specific dataset from all TSPLIB sets
-  # Remove this:
-  tsp = readTSP("./data/all/a280.tsp")
-  dict_tsp = struct_to_dict(tsp)
-  test = shuffle(collect(1:dict_tsp[:dimension])) # Random permutation of nodes
-  # test = collect(1:dict_tsp[:dimension]) # Random permutation of nodes
-  println("Dataset name: ", dict_tsp[:name])
-  println("Nodes: ", dict_tsp[:dimension])
-  println("Path: ", test)
-  println("Distance: ", obj_function(test, dict_tsp[:weights])) # Print obj function
-
-  # Plotting
-  println("Plot:")
-  coords = getPathCoordsVector(test, dict_tsp[:nodes])
-  plt = lineplot(coords[1], coords[2]; title="Current path", height=20, width=40)
-  println(plt)
+  tsp = openTSPFile()
+  dict_tsp = structToDict(tsp)
+  TSPtest(dict_tsp, randomPath, 10)
 end
 
 main()
