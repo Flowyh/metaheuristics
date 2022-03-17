@@ -106,8 +106,44 @@ Returns a random permutation of given length.
 - Permutation of `TSP` dataset nodes.
 
 """
-function krandom(tsp_data::Dict)
+function krandom(tsp_data::Dict, args...)
   return shuffle(collect(1:tsp_data[:dimension]))
+end
+
+"""
+    twoopt(tsp_data) -> Array{Integer}
+
+Calculate best path of n nodes and their weights using 2-OPT algorithm.
+
+Initial path is chosen at random using krandom().
+
+## Params:
+- `tsp_data::Dict`: `TSP` dataset.
+
+## returns:
+- `Array{Integer}` Best path computed.
+
+"""
+function twoopt(tsp_data::Dict, args...)
+  path = krandom(tsp_data)
+  function swap(x, y)
+    swapped_path = copy(path)
+    swapped_path[x], swapped_path[y] = swapped_path[y], swapped_path[x]
+    return swapped_path
+  end
+  best_distance = nodeWeightSum(path, tsp_data[:weights])
+  for i in 2:length(path)
+    for j in i+1:length(path)
+      current_neigh = swap(i, j)
+      @assert isperm(current_neigh)
+      current_distance = nodeWeightSum(current_neigh, tsp_data[:weights])
+      if (current_distance < best_distance) 
+        best_distance = current_distance
+        path = current_neigh
+      end
+    end
+  end
+  return path
 end
 
 """
@@ -123,12 +159,12 @@ Requires `test_func` function to compute path for current dataset.
 - `tests_num::{Int}`: number of performed tests.
 
 """
-function TSPtest(tsp_data::Dict, test_func::Function, objective::Function, tests_num::Int)
+function TSPtest(tsp_data::Dict, test_func::Function, objective::Function, tests_num::Int, args...)
   best_path=[]
   best_distance=typemax(Float64)
   for i in 1:tests_num
     println("\n\n=================TEST $i================")
-    computed_path = test_func(tsp_data)
+    computed_path = test_func(tsp_data, args...)
     # Test info:
     println("Dataset name: ", tsp_data[:name])
     println("Nodes: ", tsp_data[:dimension])
@@ -158,7 +194,9 @@ Main program function.
 function main()
   tsp = openTSPFile()
   dict_tsp = structToDict(tsp)
-  TSPtest(dict_tsp, krandom, nodeWeightSum, 1000)
+  twoopt(dict_tsp)
+  # println(dict_tsp[:weights][1, :])
+  TSPtest(dict_tsp, twoopt, nodeWeightSum, 100000, "testtripledot")
 end
 
 main()
