@@ -21,7 +21,7 @@ function structToDict(s)
 end
 
 """
-    objFunction(path, weights) -> Float64
+    nodeWeightSum(path, weights) -> Float64
 
 Returns path's weight.
 
@@ -33,7 +33,7 @@ Returns path's weight.
 - `Float64`: Sum of weights between nodes in given path.
 
 """
-function objFunction(path::Vector{T}, weights::AbstractMatrix{Float64}) where T<:Integer
+function nodeWeightSum(path::Vector{T}, weights::AbstractMatrix{Float64}) where T<:Integer
   @assert isperm(path) "Invalid path provided"
   result = length(path) != size(weights, 1) ? zero(Float64) : weights[path[end], path[1]]
   for i = 1:length(path)-1
@@ -95,7 +95,7 @@ function openTSPFile()
 end
 
 """
-    randomPath(tsp_data) -> Array{Integer}
+    krandom(tsp_data) -> Array{Integer}
 
 Returns a random permutation of given length.
 
@@ -106,16 +106,16 @@ Returns a random permutation of given length.
 - Permutation of `TSP` dataset nodes.
 
 """
-function randomPath(tsp_data::Dict)
+function krandom(tsp_data::Dict)
   return shuffle(collect(1:tsp_data[:dimension]))
 end
 
 """
     TSPLIB(tsp_data, test_func, tests_num)
 
-Runs test_num tests on given tsp_data dictionary.
+Runs `test_num` tests on given tsp_data dictionary.
 
-Requires test_func function to compute path for current dataset.
+Requires `test_func` function to compute path for current dataset.
 
 ## Params:
 - `tsp_data::Dict`: `TSP` data.
@@ -123,22 +123,33 @@ Requires test_func function to compute path for current dataset.
 - `tests_num::{Int}`: number of performed tests.
 
 """
-function TSPtest(tsp_data::Dict, test_func::Function, tests_num::Int)
+function TSPtest(tsp_data::Dict, test_func::Function, objective::Function, tests_num::Int)
+  best_path=[]
+  best_distance=typemax(Float64)
   for i in 1:tests_num
-    println("\n\n================TEST $i================")
+    println("\n\n=================TEST $i================")
     computed_path = test_func(tsp_data)
     # Test info:
     println("Dataset name: ", tsp_data[:name])
     println("Nodes: ", tsp_data[:dimension])
     println("Path: ", computed_path)
-    println("Distance: ", objFunction(computed_path, tsp_data[:weights]))
-    # Plotting
-    println("Plot:")
-    coords = getPathCoordsVector(computed_path, tsp_data[:nodes])
-    plt = lineplot(coords[1], coords[2]; title="Current path", height=20, width=40)
-    println(plt)
+    curr_distance = objective(computed_path, tsp_data[:weights])
+    println("Distance: ", curr_distance)
+    if (curr_distance < best_distance) 
+      best_distance = curr_distance
+      best_path = computed_path
+    end
     println("=============END OF TEST $i=============")
   end
+
+  println("\n\n==================BEST==================")
+  println("Path: ", best_path)
+  println("Distance: ", best_distance)
+  println("Plot:")
+  coords = getPathCoordsVector(best_path, tsp_data[:nodes])
+  plt = lineplot(coords[1], coords[2]; title="Current path", height=20, width=40)
+  println(plt)
+  println("==============END OF TESTS==============")  
 end
 
 """
@@ -147,7 +158,7 @@ Main program function.
 function main()
   tsp = openTSPFile()
   dict_tsp = structToDict(tsp)
-  TSPtest(dict_tsp, randomPath, 10)
+  TSPtest(dict_tsp, krandom, nodeWeightSum, 1000)
 end
 
 main()
