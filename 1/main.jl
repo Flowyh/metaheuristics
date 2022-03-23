@@ -110,6 +110,29 @@ function krandom(tsp_data::Dict, args...)
   return shuffle(collect(1:tsp_data[:dimension]))
 end
 
+function nearbyNeighbour(tsp_data::Dict, start::Int)
+  length = tsp_data[:dimension]
+  path = Vector{Int}()
+  current_point = start
+  push!(path, current_point)
+
+  for i in 1:(length-1)
+    weights = tsp_data[:weights][path[i], :]
+    current_weight = typemax(Float64)
+    index = 1
+    for weight in weights
+      if (!(index in path) && current_weight > weight && weight != 0)
+        current_weight = weight
+        current_point = index
+      end
+      index += 1
+    end
+    index = 1
+    push!(path, current_point)
+  end
+  return path
+end
+
 """
     twoopt(tsp_data) -> Array{Integer}
 
