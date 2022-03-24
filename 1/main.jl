@@ -1,6 +1,8 @@
 using TSPLIB
 using Random
-using UnicodePlots
+using Plots
+import UnicodePlots
+using Dates
 
 """
     structToDict(s) -> Dict
@@ -63,6 +65,8 @@ function getPathCoordsVector(path::Vector{T}, coords::AbstractMatrix{Float64}) w
     append!(x, node_coords[1])
     append!(y, node_coords[2])
   end
+  append!(x, coords[path[1], 1])
+  append!(y, coords[path[1], 2])
   return (x, y)
 end
 
@@ -110,13 +114,14 @@ function krandom(tsp_data::Dict, args...)
   return shuffle(collect(1:tsp_data[:dimension]))
 end
 
-function nearbyNeighbour(tsp_data::Dict, start::Int)
-  length = tsp_data[:dimension]
+function nearestNeighbour(tsp_data::Dict, args...)
+  if (length(args) < 1) return end
+  len = tsp_data[:dimension]
   path = Vector{Int}()
-  current_point = start
+  current_point = args[1]
   push!(path, current_point)
 
-  for i in 1:(length-1)
+  for i in 1:(len-1)
     weights = tsp_data[:weights][path[i], :]
     current_weight = typemax(Float64)
     index = 1
@@ -129,6 +134,20 @@ function nearbyNeighbour(tsp_data::Dict, start::Int)
     end
     index = 1
     push!(path, current_point)
+  end
+  return path
+end
+
+function repetitiveNearestNeighbour(tsp_data::Dict, args...)
+  path = nearestNeighbour(tsp_data, 1)
+  goal = nodeWeightSum(path, tsp_data[:weights])
+  for i in 2:tsp_data[:dimension]
+    tmp_path = nearestNeighbour(tsp_data, i)
+    tmp_goal = nodeWeightSum(tmp_path, tsp_data[:weights])
+    if (tmp_goal < goal)
+      goal = tmp_goal
+      path = tmp_path
+    end
   end
   return path
 end
@@ -148,14 +167,17 @@ Initial path is chosen at random using krandom().
 
 """
 function twoopt(tsp_data::Dict, args...)
+  steps = false
+  if (length(args) == 1) steps = args[1] end
   path = krandom(tsp_data)
   function swap(x, y)
     swapped_path = copy(path)
-    swapped_path[x], swapped_path[y] = swapped_path[y], swapped_path[x]
+    swapped_path[x:y] = swapped_path[y:-1:x]
     return swapped_path
   end
   best_distance = nodeWeightSum(path, tsp_data[:weights])
-  for i in 2:length(path)
+  for i in 1:length(path) - 1
+    if (steps) println("STEP $i") end 
     for j in i+1:length(path)
       current_neigh = swap(i, j)
       @assert isperm(current_neigh)
@@ -169,8 +191,10 @@ function twoopt(tsp_data::Dict, args...)
   return path
 end
 
+
+saveplot = true
 """
-    TSPLIB(tsp_data, test_func, tests_num)
+    TSPtest(tsp_data, test_func, tests_num)
 
 Runs `test_num` tests on given tsp_data dictionary.
 
@@ -186,7 +210,7 @@ function TSPtest(tsp_data::Dict, test_func::Function, objective::Function, tests
   best_path=[]
   best_distance=typemax(Float64)
   for i in 1:tests_num
-    println("\n\n=================TEST $i================")
+    println("\n\n======================TEST $i=====================")
     computed_path = test_func(tsp_data, args...)
     # Test info:
     println("Dataset name: ", tsp_data[:name])
@@ -194,32 +218,48 @@ function TSPtest(tsp_data::Dict, test_func::Function, objective::Function, tests
     println("Path: ", computed_path)
     curr_distance = objective(computed_path, tsp_data[:weights])
     println("Distance: ", curr_distance)
+    diff = curr_distance - best_distance
+    println("Diff: ", (diff >= 0 ? "+$diff" : "$diff"))
     if (curr_distance < best_distance) 
       best_distance = curr_distance
       best_path = computed_path
     end
-    println("=============END OF TEST $i=============")
+    println("==================END OF TEST $i==================")
   end
 
-  println("\n\n==================BEST==================")
+  println("\n\n=======================BEST=======================")
   println("Path: ", best_path)
   println("Distance: ", best_distance)
   println("Plot:")
   coords = getPathCoordsVector(best_path, tsp_data[:nodes])
-  plt = lineplot(coords[1], coords[2]; title="Current path", height=20, width=40)
+  plt = UnicodePlots.lineplot(coords[1], coords[2]; title="Current path", height=20, width=40)
+  UnicodePlots.scatterplot!(plt, coords[1], coords[2]; marker=repeat(["X"], length(best_path)))
   println(plt)
-  println("==============END OF TESTS==============")  
+  println("===================END OF TESTS===================\n")
+
+  if (!saveplot) return end
+  now = Dates.now()
+  println("Saving plot to: ./plots/$now.png\n")
+  plt = plot(coords[1], coords[2]; title="Current path", markershape=:circle, margin=10Plots.mm)
+  isdir("./plots") || mkdir("./plots")
+  savefig(plt, "./plots/$now.png")
 end
 
 """
-Main program function.
+Main program function
 """
-function main()
-  tsp = openTSPFile()
+function main(args::Array{String})
+  if (length(ARGS) >= 1) tsp = readTSP(ARGS[1])
+  else tsp = openTSPFile() end
+
+  if (length(ARGS) >= 2)
+    global saveplot = ARGS[2] == "no" ? false : true
+  end
+
   dict_tsp = structToDict(tsp)
-  twoopt(dict_tsp)
-  # println(dict_tsp[:weights][1, :])
-  TSPtest(dict_tsp, twoopt, nodeWeightSum, 100000, "testtripledot")
+  TSPtest(dict_tsp, twoopt, nodeWeightSum, 1, true)
 end
 
-main()
+if abspath(PROGRAM_FILE) == @__FILE__
+  main(ARGS)
+end 
