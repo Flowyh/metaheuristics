@@ -10,7 +10,7 @@ function generateCoords(n::Int, coords_range::Int)
   return result
 end
 
-function euclideanWeights(coords)
+function euclideanWeights(coords, args...)
   n = size(coords, 1)
   distances = zeros(Real, n, n)
   for i in 1:n, j in 1:n
@@ -24,7 +24,20 @@ function euclideanWeights(coords)
   return distances
 end
 
-function generateProblem(n::Int, coords_range::Int)
+function asymmetricWeights(coords, coords_range::Int)
+  n = size(coords, 1)
+  rng = MersenneTwister()
+  distances = zeros(Real, n, n)
+  for i in 1:n, j in 1:n
+    if (i != j)
+      distances[i, j] = (rand(rng, UInt) % coords_range) + 1
+      distances[j, i] = (rand(rng, UInt) % coords_range) + 1
+    end
+  end
+  return distances
+end
+
+function generateProblem(n::Int, generator::Function, coords_range::Int)
   nodes = generateCoords(n, coords_range)
-  return (nodes, euclideanWeights(nodes))
+  return (nodes, generator(nodes, coords_range))
 end
