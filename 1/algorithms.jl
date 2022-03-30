@@ -36,7 +36,18 @@ Returns a random permutation of given length.
 
 """
 function krandom(tsp_data::Dict, args...)
-  return shuffle(collect(1:tsp_data[:dimension]))
+  if (length(args) < 1) return end
+  best_path = shuffle(collect(1:tsp_data[:dimension]))
+  best_dist = nodeWeightSum(best_path, tsp_data[:weights])
+  for i in 2:args[1]
+    path = shuffle(collect(1:tsp_data[:dimension]))
+    dist = nodeWeightSum(path, tsp_data[:weights])
+    if (dist < best_dist)
+      best_dist = dist
+      best_path = path
+    end
+  end
+  return best_path
 end
 
 function nearestNeighbour(tsp_data::Dict, args...)
@@ -93,8 +104,8 @@ Initial path is chosen at random using krandom().
 """
 function twoopt(tsp_data::Dict, args...)
   steps = false
-  if (length(args) == 1) steps = args[1] end
-  if (length(args) == 2) path = args[2]
+  if (length(args) == 1) path = args[1]
+  if (length(args) == 2) steps = args[2] end
   else path = krandom(tsp_data) end
   
   function swap(x, y)
