@@ -28,3 +28,8 @@ Manifest.toml
 
 # Skip plots
 /plots
+
+# Skip jsons
+/jsons
+
+*.json
