@@ -188,23 +188,23 @@ function algorithmsTest(functions::Array{Function}, k, random=false)
       results[func]["time"][n] = []
       results[func]["best"][n] = []
       results[func]["prd"][n] = []
-        best_path = krandom(tsp_data, 1)
-        best_dist = nodeWeightSum(best_path, tsp_data[:weights])
-        for i in 1:k
-          test_start = time_ns()
-          if (func == twoopt) path = func(tsp_data, best_path)
-          elseif (func == krandom) path = func(tsp_data, k)
-          else path = func(tsp_data, 1) end
-          test_end = time_ns()
-          push!(results[func]["time"][n], (test_end - test_start) * 1e-6)
-          dist = nodeWeightSum(path, tsp_data[:weights])
-          if (dist < best_dist)
-            best_dist = dist
-            best_path = path
-          end
+      best_path = krandom(tsp_data, 1)
+      best_dist = nodeWeightSum(best_path, tsp_data[:weights])
+      for i in 1:k
+        test_start = time_ns()
+        if (func == twoopt) path = func(tsp_data, best_path)
+        elseif (func == krandom) path = func(tsp_data, k)
+        else path = func(tsp_data, 1) end
+        test_end = time_ns()
+        push!(results[func]["time"][n], (test_end - test_start) * 1e-6)
+        dist = nodeWeightSum(path, tsp_data[:weights])
+        if (dist < best_dist)
+          best_dist = dist
+          best_path = path
         end
-        push!(results[func]["best"][n], best_dist)
-        push!(results[func]["prd"][n], prd(best_dist, problems[problem]))
+      end
+      push!(results[func]["best"][n], best_dist)
+      push!(results[func]["prd"][n], prd(best_dist, problems[problem]))
     end
   end
 
@@ -212,6 +212,59 @@ function algorithmsTest(functions::Array{Function}, k, random=false)
   isdir("./jsons") || mkdir("./jsons")
   for func in functions
     open("./jsons/$(func)-k$k-$now.json", "w") do io
+      JSON.print(io, results[func])
+    end;
+  end
+end
+
+function randomGraphsTest(functions::Array{Function}, k, start, step, s_end, random)
+  results = Dict()
+
+  for func in functions
+    results[func] = Dict()
+  end
+  for key in keys(results)
+    results[key] = Dict("time" => Dict(), "prd" => Dict(), "best" => Dict())
+  end
+  reg = r"([0-9]+)"
+  for n in start:step:s_end
+    println("PROBLEM: $n")
+    (nodes, distances) = random(n, 5n)
+    tsp_data = Dict(:dimension => n, :weights => distances)
+    best_func = typemax(Int)
+    best_dist_funcs = Dict()
+    for func in functions
+      results[func]["time"][n] = []
+      results[func]["best"][n] = []
+      results[func]["prd"][n] = []
+      best_path = krandom(tsp_data, 1)
+      best_dist = nodeWeightSum(best_path, tsp_data[:weights])
+      for i in 1:k
+        test_start = time_ns()
+        if (func == twoopt) path = func(tsp_data, best_path)
+        elseif (func == krandom) path = func(tsp_data, k)
+        else path = func(tsp_data, 1) end
+        test_end = time_ns()
+        push!(results[func]["time"][n], (test_end - test_start) * 1e-6)
+        dist = nodeWeightSum(path, tsp_data[:weights])
+        if (dist < best_dist)
+          best_dist = dist
+          best_path = path
+        end
+      end
+      best_dist_funcs[func] = best_dist
+      best_func = (best_func > best_dist ? best_dist : best_func)
+      push!(results[func]["best"][n], best_dist)
+    end
+    for func in functions
+      push!(results[func]["prd"][n], prd(best_dist_funcs[func], best_func))
+    end
+  end
+
+  now = Dates.now()
+  isdir("./jsons") || mkdir("./jsons")
+  for func in functions
+    open("./jsons/$(func)_RANDOMS-k$k-b$start-s$step-e$s_end-$now.json", "w") do io
       JSON.print(io, results[func])
     end;
   end

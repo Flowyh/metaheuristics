@@ -61,14 +61,14 @@ function plot_data(ns::Vector{Int}, data, step::Int, s_end::Int, algs, xl::Strin
   return plt
 end
 
-function plot_avgs(ns::Vector{Int}, data, step::Int, s_end::Int, sort, xl::String, yl::String, t::String, skip::Bool)
+function plot_avgs(ns::Vector{Int}, data, step::Int, s_end::Int, alg, xl::String, yl::String, t::String, skip::Bool)
   keys = sort_keys(data)
   avgs = Vector{Float64}()
 
   for key in keys
     push!(avgs, avg_vector(data[key]))
   end
-  if (!skip) plt = plot_data(ns, avgs, step, s_end, sort, xl, yl, t) end
+  if (!skip) plt = plot_data(ns, avgs, step, s_end, alg, xl, yl, t) end
   return (plt, avgs)
 end
 
