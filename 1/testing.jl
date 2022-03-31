@@ -183,7 +183,7 @@ function algorithmsTest(functions::Array{Function}, k, random=false)
   for problem in collect(keys(problems))
     println("PROBLEM: $problem")
     n = match(reg, problem)[1]
-    tsp_data = structToDict(readTSP("./data/all/$problem"))
+    tsp_data = structToDict(readTSP("/home/hubert/all/$problem"))
     for func in functions
       results[func]["time"][n] = []
       results[func]["best"][n] = []
