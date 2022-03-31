@@ -183,7 +183,7 @@ function algorithmsTest(functions::Array{Function}, k, random=false)
   for problem in collect(keys(problems))
     println("PROBLEM: $problem")
     n = match(reg, problem)[1]
-    tsp_data = structToDict(readTSP("/home/hubert/all/$problem"))
+    tsp_data = structToDict(readTSP("./data/all/$problem"))
     for func in functions
       results[func]["time"][n] = []
       results[func]["best"][n] = []
@@ -264,7 +264,7 @@ function randomGraphsTest(functions::Array{Function}, k, start, step, s_end, ran
   now = Dates.now()
   isdir("./jsons") || mkdir("./jsons")
   for func in functions
-    open("./jsons/$(func)_RANDOMS-k$k-b$start-s$step-e$s_end-$now.json", "w") do io
+    open("./jsons/$(func)-RANDOMS-k$k-b$start-s$step-e$s_end-$now.json", "w") do io
       JSON.print(io, results[func])
     end;
   end

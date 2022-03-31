@@ -31,5 +31,3 @@ Manifest.toml
 
 # Skip jsons
 /jsons
-
-*.json

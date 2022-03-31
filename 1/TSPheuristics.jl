@@ -1,7 +1,7 @@
 module TSPheuristics
   export krandom, twoopt, nearestNeighbour, repetitiveNearestNeighbour
   export openTSPFile, structToDict, BasicTSPTest, algorithmsTest, randomGraphsTest
-  export nodeWeightSum
+  export nodeWeightSum, readTSP
   export generateEuclidean, generateAsymmetric
   include("algorithms.jl")
   include("testing.jl")

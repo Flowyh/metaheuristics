@@ -28,18 +28,22 @@ end
 
 Returns a random permutation of given length.
 
+Big o: O(kn)
+
 ## Params:
 - `tsp_data::Dict`: `TSP` dataset.
+- `args[1]` : k number of tests
 
 ## Returns:
 - Permutation of `TSP` dataset nodes.
 
 """
 function krandom(tsp_data::Dict, args...)
-  if (length(args) < 1) return end
+  if (length(args) < 1) k = 100
+  else k = args[1] end
   best_path = shuffle(collect(1:tsp_data[:dimension]))
   best_dist = nodeWeightSum(best_path, tsp_data[:weights])
-  for i in 2:args[1]
+  for i in 2:k
     path = shuffle(collect(1:tsp_data[:dimension]))
     dist = nodeWeightSum(path, tsp_data[:weights])
     if (dist < best_dist)
@@ -50,11 +54,27 @@ function krandom(tsp_data::Dict, args...)
   return best_path
 end
 
+"""
+    nearestNeighbour(tsp_data) -> Array{Integer}
+
+Returns the best path in current TSP dataset using Nearest Neighbour heuristic.
+
+Big o: O(n^2)
+
+## Params:
+- `tsp_data::Dict`: `TSP` dataset.
+- `args[1]` : starting point
+
+## Returns:
+- Nearest neighbour's best path of `TSP` dataset nodes.
+
+"""
+
 function nearestNeighbour(tsp_data::Dict, args...)
-  if (length(args) < 1) return end
   len = tsp_data[:dimension]
   path = Vector{Int}()
-  current_point = args[1]
+  if (length(args) < 1) current_point = 1
+  else current_point = args[1] end
   push!(path, current_point)
 
   for i in 1:(len-1)
@@ -74,6 +94,22 @@ function nearestNeighbour(tsp_data::Dict, args...)
   return path
 end
 
+"""
+    repetitiveNearestNeighbour(tsp_data) -> Array{Integer}
+
+Returns the best path in current TSP dataset using Repetitive Nearest Neighbour heuristic.
+
+Uses nearestNeighbour and checks paths for every possible starting point.
+
+Big o: O(n^3)
+
+## Params:
+- `tsp_data::Dict`: `TSP` dataset.
+
+## Returns:
+- Repetitive nearest neighbour's best path of `TSP` dataset nodes.
+
+"""
 function repetitiveNearestNeighbour(tsp_data::Dict, args...)
   path = nearestNeighbour(tsp_data, 1)
   goal = nodeWeightSum(path, tsp_data[:weights])
@@ -93,7 +129,11 @@ end
 
 Calculate best path of n nodes and their weights using 2-OPT algorithm.
 
-Initial path is chosen at random using krandom().
+Initial path is given or chosen at random using krandom().
+
+Big o: O(n^2 * k), where k is cost of calculating current permutation's distance. Here: O(n^3)
+
+It should be O(n^3 * k) if we want to keep swapping until we find a better path than first, but we've omitted it.
 
 ## Params:
 - `tsp_data::Dict`: `TSP` dataset.
@@ -106,7 +146,7 @@ function twoopt(tsp_data::Dict, args...)
   steps = false
   if (length(args) == 1) path = args[1]
   if (length(args) == 2) steps = args[2] end
-  else path = krandom(tsp_data) end
+  else path = krandom(tsp_data, 1) end
   
   function swap(x, y)
     swapped_path = copy(path)

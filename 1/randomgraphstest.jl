@@ -43,7 +43,7 @@ function main(args::Array{String})
       println("Options: 2opt, nn, rnn, krand")
       exit(1)
     end 
-    randomGraphsTest(algsStrToFunc(algs), k, start, step, s_end, generateEuclidean)
+    randomGraphsTest(algsStrToFunc(algs), k, start, step, s_end, generateAsymmetric)
   catch e
     throw(e)
     println("Error")
