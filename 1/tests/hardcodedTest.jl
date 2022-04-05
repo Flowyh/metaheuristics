@@ -1,22 +1,8 @@
-include("TSPheuristics.jl")
+include("../TSPheuristics.jl")
 using .TSPheuristics
 
 function usage()
-  println("Usage: julia algorithmstest.jl [k] [algorithms(defualt=all), split by space]")
-end
-
-function algsStrToFunc(algs::Array{String})
-  funcs = Dict(
-    "2opt" => twoopt,
-    "krand" => krandom,
-    "nn" => nearestNeighbour,
-    "rnn" => repetitiveNearestNeighbour
-  )
-  result = Array{Function}(undef, 0)
-  for alg in algs
-    push!(result, funcs[alg])
-  end
-  return result
+  println("Usage: julia hardcodedTest.jl [k] [algorithms(defualt=all), split by space]")
 end
 
 """

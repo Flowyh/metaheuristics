@@ -131,7 +131,7 @@ Calculate best path of n nodes and their weights using 2-OPT algorithm.
 
 Initial path is given or chosen at random using krandom().
 
-Big o: O(n^3), where k is cost of calculating current permutation's distance. Here: O(n^3)
+Big o: O(n^3)
 
 ## Params:
 - `tsp_data::Dict`: `TSP` dataset.
@@ -165,4 +165,18 @@ function twoopt(tsp_data::Dict, args...)
     end
   end
   return path
+end
+
+function algsStrToFunc(algs::Array{String})
+  funcs = Dict(
+    "2opt" => twoopt,
+    "krand" => krandom,
+    "nn" => nearestNeighbour,
+    "rnn" => repetitiveNearestNeighbour
+  )
+  result = Array{Function}(undef, 0)
+  for alg in algs
+    push!(result, funcs[alg])
+  end
+  return result
 end

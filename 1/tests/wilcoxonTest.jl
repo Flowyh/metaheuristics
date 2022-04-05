@@ -42,6 +42,7 @@ function main(args::Array{String})
     k = parse(Int, args[1])
     algs = ["2opt", "nn", "rnn", "krand"]
     data = read_files(algs, k)
+    if (data === Nothing) return end
 
     two_opt_prds = Vector{Real}()
     rnn_prds = Vector{Real}()

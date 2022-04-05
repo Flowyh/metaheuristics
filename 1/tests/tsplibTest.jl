@@ -1,4 +1,4 @@
-include("TSPheuristics.jl")
+include("../TSPheuristics.jl")
 using .TSPheuristics
 
 """

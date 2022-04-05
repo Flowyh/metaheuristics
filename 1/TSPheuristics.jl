@@ -3,6 +3,7 @@ module TSPheuristics
   export openTSPFile, structToDict, BasicTSPTest, algorithmsTest, randomGraphsTest
   export nodeWeightSum, readTSP
   export generateEuclidean, generateAsymmetric
+  export algsStrToFunc
   include("algorithms.jl")
   include("testing.jl")
   include("generate.jl")
