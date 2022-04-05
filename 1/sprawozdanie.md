@@ -82,6 +82,7 @@ Dla każdej z badanych statystyk wyciągnęliśmy poniższe wnioski:
 
   - wszystkie heurystyki:
     ![best path for each heuristic asymmetric](./results/plots/asymmetric/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png)
+
   - bez k-random:
     ![best path for each heurstic excluding krand asymmetric](./results/plots/asymmetric/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png)
 
@@ -89,6 +90,7 @@ Dla każdej z badanych statystyk wyciągnęliśmy poniższe wnioski:
 
   - wszystkie heurystyki:
     ![best path for each heuristic TSPLIB](./results/plots/tsplib/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png)
+
   - bez k-random:
     ![best path for each heurstic excluding krand TSPLIB](./results/plots/tsplib/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png)
 
@@ -108,6 +110,7 @@ W obu przypadkach nieporównywalnie gorsze wyniki otrzymaliśmy od metody k-rand
     ![prd for each heuristic euclidean](./results/plots/euclidean/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-prd-avgs.png)
 
 - problemy TSPLIB:
+
   - wszystkie heurystyki:
     ![prd for each heuristic tsplib](./results/plots/tsplib/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-prd-avgs.png)
 
@@ -124,6 +127,7 @@ Z badań wynika, że ilość węzłów nie wpływa na PRD. Identycznie jak dla w
 
   - wszystkie heurystyki:
     ![time avgs for each heurstic euclidean](./results/plots/euclidean/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png)
+
   - bez k-random:
     ![best path for each heurstic excluding krand euclidean](./results/plots/euclidean/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png)
 
@@ -131,6 +135,7 @@ Z badań wynika, że ilość węzłów nie wpływa na PRD. Identycznie jak dla w
 
   - wszystkie heurystyki:
     ![time avgs  for each heuristic asymmetric](./results/plots/asymmetric/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png)
+
   - bez k-random:
     ![time avgs  for each heurstic excluding krand asymmetric](./results/plots/asymmetric/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png)
 
@@ -138,6 +143,7 @@ Z badań wynika, że ilość węzłów nie wpływa na PRD. Identycznie jak dla w
 
   - wszystkie heurystyki:
     ![time avgs for each heuristic TSPLIB](./results/plots/tsplib/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png)
+
   - bez k-random:
     ![time avgs for each heurstic excluding krand TSPLIB](./results/plots/tsplib/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png)
 
