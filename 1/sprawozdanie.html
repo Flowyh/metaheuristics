@@ -1,0 +1,455 @@
+<!DOCTYPE html><html><head>
+      <title>sprawozdanie</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/flowyh/.vscode-server/extensions/shd101wyy.markdown-preview-enhanced-0.6.2/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h3 class="mume-header" id="sprawozdanie-etap-1httpradoslawidzikowskistaffiiarpwrwrocplinstructionmeta1pdf">Sprawozdanie <a href="http://radoslaw.idzikowski.staff.iiar.pwr.wroc.pl/instruction/meta1.pdf">Etap 1</a></h3>
+
+<table>
+<thead>
+<tr>
+<th>Przedmiot</th>
+<th>Algorytmy metaheurystyczne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prowadz&#x105;cy</td>
+<td>Dr in&#x17C;. Rados&#x142;aw Idzikowski</td>
+</tr>
+<tr>
+<td>Autorzy</td>
+<td>Maciej Bazela (261743) Hubert Gruda (261734)</td>
+</tr>
+<tr>
+<td>Grupa</td>
+<td>Czwartek 13:15-15:00</td>
+</tr>
+<tr>
+<td>Kod grupy</td>
+<td>K03-66p</td>
+</tr>
+<tr>
+<td>J&#x119;zyk</td>
+<td>Julia</td>
+</tr>
+</tbody>
+</table>
+<h3 class="mume-header" id="implementacja">Implementacja</h3>
+
+<p>Etap 1 polega&#x142; na implementacji heurystyk dla <a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">problemu komiwoja&#x17C;era</a> oraz zbadaniu ich niekt&#xF3;rych w&#x142;asno&#x15B;ci (czas dzia&#x142;ania, PRD).</p>
+<p>Badali&#x15B;my cztery heurystyki:</p>
+<ul>
+<li>metoda k-random</li>
+<li>metoda <a href="https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm">najbli&#x17C;szego s&#x105;siada</a></li>
+<li>rozszerzona metoda najbli&#x17C;szego s&#x105;siada</li>
+<li>algorytm <a href="https://en.wikipedia.org/wiki/2-opt">2-OPT</a></li>
+</ul>
+<p>Implementacje powy&#x17C;szych algorytm&#xF3;w znajduj&#x105; si&#x119; w pliku <a href="./algorithms.jl">algorithms.jl</a>.</p>
+<p>Badania przeprowadzili&#x15B;my na bibliotece <a href="http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/">TSPLIB</a>, kt&#xF3;ra zawiera przyk&#x142;adowe dane dla symetrycznego problemu komiwoja&#x17C;era, oraz na losowo generowanych grafach.</p>
+<p>Funkcje generuj&#x105;ce grafy o symetrycznych (euklidesowych) i asymetrycznych (losowych) wagach znajduj&#x105; si&#x119; w pliku <a href="./generate.jl">generate.jl</a>.</p>
+<h3 class="mume-header" id="badania">Badania</h3>
+
+<p>Pierwszy z test&#xF3;w <a href="./testing.jl#:~:text=BasicTSPTest">BasicTSPTest</a> polega&#x142; na uruchomieniu wybranej heurystyki na podanym datasecie z TSPLIB <strong>k</strong>-razy i wybraniu najlepszej wyliczonej warto&#x15B;ci funkcji celu.<br>
+Program uruchamiaj&#x105;cy test wypisywa&#x142; do konsoli wyliczane po kolei warto&#x15B;ci oraz drukowa&#x142; wybran&#x105; najlepsz&#x105; &#x15B;cie&#x17C;k&#x119; do konsoli oraz pliku w folderze ./plots.</p>
+<p>W przypadku problemu komiwoja&#x17C;era, nasz&#x105; funkcj&#x105; celu by&#x142;a suma wag pomi&#x119;dzy kolejnymi w&#x119;z&#x142;ami zadanej drogi.</p>
+<p>Nast&#x119;pne testy polega&#x142;y na wyliczeniu trzech statystyk dla ka&#x17C;dej heurystyki: czas dzia&#x142;ania danego algorytmu, PRD oraz minimalna warto&#x15B;&#x107; funkcji celu dla badanego problemu.</p>
+<p>Dla ka&#x17C;dej heurystyki wykonywali&#x15B;my k test&#xF3;w na <a href="./testing.jl#:~:text=hardcodedData">wybranym przez nas zbiorze danych z TSPLIB</a> oraz na losowych grafach z podanego zakresu (i o podanej zmianie warto&#x15B;ci ilo&#x15B;ci miast).</p>
+<p>Implementacja bada&#x144; na predefiniowanym zbiorze plik&#xF3;w .tsp znajduje si&#x119; w funkcji <a href="./testing.jl#:~:text=algorithmsTest">algorithmsTest</a> w pliku testing.jl.</p>
+<p>Te same badania, ale na losowych grafach znajduj&#x105; si&#x119; w funkcji<br>
+<a href="./testing.jl#:~:text=randomGraphsTest">randomGraphsTest</a> w tym samym pliku.</p>
+<h3 class="mume-header" id="wyniki">Wyniki</h3>
+
+<p>Wyniki test&#xF3;w algorithmsTest oraz randomGraphsTest zapisywali&#x15B;my do formatu .json w folderze <a href="./results/jsons/">./results/jsons</a>.<br>
+Rozdzielili&#x15B;my je na 3 r&#xF3;&#x17C;ne kategorie:</p>
+<ul>
+<li><a href="./results/jsons/tsplib/">wyniki dla problem&#xF3;w z TSPLIB</a></li>
+<li><a href="./results/jsons/euclidean">wyniki dla losowych graf&#xF3;w o wagach euklidesowych</a></li>
+<li><a href="./results/jsons/asymmetric/">wyniki dla losowych graf&#xF3;w o losowych asymetrycznych wagach</a></li>
+</ul>
+<p>Pliki wynikowe zawieraj&#x105; warto&#x15B;ci podanych wy&#x17C;ej statystyk (czas, prd, najlepsza warto&#x15B;&#x107; funkcji celu) rozdzielone wed&#x142;ug ilo&#x15B;ci w&#x119;z&#x142;&#xF3;w dla zadanego problemu.</p>
+<p>Przygotowali&#x15B;my dwa programy generuj&#x105;ce powy&#x17C;sze pliki .json:</p>
+<ul>
+<li><a href="./tests/hardcodedTest.jl">./tests/hardcodedTest.jl</a> generuj&#x105;cy wyniki dla predefiniowanego zbioru plik&#xF3;w z TSPLIB (patrz: wy&#x17C;ej).</li>
+<li><a href="./tests/randomgraphsTest.jl">./tests/randomgraphsTest.jl</a> generuj&#x105;cy wyniki dla losowych graf&#xF3;w z zadanego przedzia&#x142;u.</li>
+</ul>
+<h3 class="mume-header" id="wykresy">Wykresy</h3>
+
+<p>Dla wygenerowanych wynik&#xF3;w napisali&#x15B;my program, kt&#xF3;ry sczytuje pliki .json i dla podanych algorytm&#xF3;w tworzy ich wykresy.</p>
+<p>Kod &#x17A;r&#xF3;d&#x142;owy mo&#x17C;na znale&#x17A;&#x107; w pliku <a href="./tests/plotting.jl">./tests/plotting.jl</a>.</p>
+<p>Dla wynik&#xF3;w z folderu <a href="./results/jsons/">./results/jsons</a> wygenerowali&#x15B;my wykresy dla ka&#x17C;dego algorytmu. Znajduj&#x105; si&#x119; one w folderze <a href="./results/plots/">./results/plots</a>.</p>
+<h3 class="mume-header" id="wnioski">Wnioski</h3>
+
+<p>Dla ka&#x17C;dej z badanych statystyk wyci&#x105;gn&#x119;li&#x15B;my poni&#x17C;sze wnioski:</p>
+<h5 class="mume-header" id="najlepsza-warto%C5%9B%C4%87-funkcji-celu-best-generated-path">Najlepsza warto&#x15B;&#x107; funkcji celu (best generated path):</h5>
+
+<ul>
+<li>
+<p>przyapdek symetryczny:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/euclidean/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png" alt="best path for each heurstic euclidean"></li>
+<li>bez k-random:<br>
+<img src="./results/plots/euclidean/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png" alt="best path for each heurstic excluding krand euclidean"></li>
+</ul>
+</li>
+<li>
+<p>przypadek asymetryczny:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/asymmetric/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png" alt="best path for each heuristic asymmetric"></li>
+<li>bez k-random:<br>
+<img src="./results/plots/asymmetric/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png" alt="best path for each heurstic excluding krand asymmetric"></li>
+</ul>
+</li>
+<li>
+<p>problemy TSPLIB:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/tsplib/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png" alt="best path for each heuristic TSPLIB"></li>
+<li>bez k-random:<br>
+<img src="./results/plots/tsplib/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-best-path-avgs.png" alt="best path for each heurstic excluding krand TSPLIB"></li>
+</ul>
+</li>
+</ul>
+<p>Dla algorytm&#xF3;w k-random i 2-opt przy wi&#x119;kszej ilo&#x15B;ci test&#xF3;w otrzymujemy lepsze rozwi&#x105;zania.<br>
+Wynika to z zaimplementowanej losowo&#x15B;ci w obu algorytmach (k-random dos&#x142;ownie generuje losow&#x105; &#x15B;ci&#x119;&#x17C;k&#x119;, 2opt ulepsza wcze&#x15B;niej losowo wygenerowan&#x105; &#x15B;cie&#x17C;k&#x119;).<br>
+Dla obu metod najbli&#x17C;szego s&#x105;siada ilo&#x15B;&#x107; test&#xF3;w nie wp&#x142;ywa na generowanie lepszego rozwi&#x105;zania, gdy&#x17C; nie zawieraj&#x105; one losowo&#x15B;ci.<br>
+Dla ka&#x17C;dego algorytmu ilo&#x15B;c w&#x119;&#x17C;&#x142;&#xF3;w nie wp&#x142;ywa w &#x17C;aden spos&#xF3;b na generowanie najkr&#xF3;tszej drogi.<br>
+Z wykres&#xF3;w mo&#x17C;na wywnioskowa&#x107;, &#x17C;e najlepsze trasy dla przypadku symetrycznego generowa&#x142; algorytm 2opt, na drugim miejscu rozszerzona metoda s&#x105;siada, b&#x119;d&#x105;ca minimalnie lepsza od zwyk&#x142;ej metody s&#x105;siada.<br>
+Dla przypadku asymetrycznego algorytm 2-opt jest du&#x17C;o gorszy ni&#x17C; algorytmy najbli&#x17C;szego s&#x105;siada.<br>
+W obu przypadkach niepor&#xF3;wnywalnie gorsze wyniki otrzymali&#x15B;my od metody k-random.</p>
+<h5 class="mume-header" id="prd">PRD:</h5>
+
+<ul>
+<li>
+<p>przyapdek symetryczny:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/euclidean/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-prd-avgs.png" alt="prd for each heuristic euclidean"></li>
+</ul>
+</li>
+<li>
+<p>problemy TSPLIB:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/tsplib/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-prd-avgs.png" alt="prd for each heuristic tsplib"></li>
+</ul>
+</li>
+</ul>
+<p>PRD okre&#x15B;lone jest wzorem: (p_gen - p_best) / p_best * 100%, gdzie:</p>
+<ul>
+<li>p_gen to najlepsza warto&#x15B;&#x107; funkcji celu dla danej heurystyki,</li>
+<li>p_best to rozwi&#x105;zanie optymalne dla zadanego problemu (w przypadku braku informacji o optymalnej &#x15B;cie&#x17C;ce przyjmowali&#x15B;my p_best jako warto&#x15B;&#x107; funkcji celu dla najlepszej heurystyki)</li>
+</ul>
+<p>Z bada&#x144; wynika, &#x17C;e ilo&#x15B;&#x107; w&#x119;z&#x142;&#xF3;w nie wp&#x142;ywa na PRD. Identycznie jak dla warto&#x15B;ci funkcji celu dla najlepszej wygenerowanej &#x15B;cie&#x17C;ki, najlepszy jest alogrytm 2-opt, druga jest rozszerzona metoda s&#x105;siada, trzecia zwyk&#x142;a metoda s&#x105;siada, a na samym ko&#x144;cu k-random.</p>
+<h5 class="mume-header" id="time-complexity">Time Complexity:</h5>
+
+<ul>
+<li>
+<p>przyapdek symetryczny:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/euclidean/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png" alt="time avgs for each heurstic euclidean"></li>
+<li>bez k-random:<br>
+<img src="./results/plots/euclidean/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png" alt="best path for each heurstic excluding krand euclidean"></li>
+</ul>
+</li>
+<li>
+<p>przypadek asymetryczny:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/asymmetric/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png" alt="time avgs  for each heuristic asymmetric"></li>
+<li>bez k-random:<br>
+<img src="./results/plots/asymmetric/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png" alt="time avgs  for each heurstic excluding krand asymmetric"></li>
+</ul>
+</li>
+<li>
+<p>problemy TSPLIB:</p>
+<ul>
+<li>wszystkie heurystyki:<br>
+<img src="./results/plots/tsplib/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png" alt="time avgs for each heuristic TSPLIB"></li>
+<li>bez k-random:<br>
+<img src="./results/plots/tsplib/twoopt_repetitiveNearestNeighbour_nearestNeighbour/twoopt_repetitiveNearestNeighbour_nearestNeighbour-k10-time-avgs.png" alt="time avgs for each heurstic excluding krand TSPLIB"></li>
+</ul>
+</li>
+</ul>
+<p>Dla badanych heurystyk oszacowali&#x15B;my ich z&#x142;o&#x17C;ono&#x15B;ci obliczeniowe:</p>
+<ul>
+<li>k-random O(kn), gdzie k to ilo&#x15B;c losowo generowanych permutacji, a n to wielko&#x15B;&#x107; danych wej&#x15B;ciowych (w&#x119;z&#x142;&#xF3;w).</li>
+<li>metoda najbli&#x17C;szego s&#x105;siada O(n^2), gdy&#x17C; dla ka&#x17C;dego w&#x119;z&#x142;a musimy sprawdzi&#x107; do n-1 innych w&#x119;z&#x142;&#xF3;w.</li>
+<li>metoda rozszerzonego najbli&#x17C;szego s&#x105;siada O(n^3), gdy&#x17C; przechodzimy przez metod&#x119; najbli&#x17C;szego s&#x105;siada tyle razy ile mamy w&#x119;z&#x142;&#xF3;w, czyli n razy.</li>
+<li>algorytm 2-opt O(n^3), liczenie drogi (koszt O(n)) dla ka&#x17C;dego mo&#x17C;liwego przestawienia dw&#xF3;ch par w&#x119;z&#x142;&#xF3;w z wej&#x15B;ciowej drogi.</li>
+</ul>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
