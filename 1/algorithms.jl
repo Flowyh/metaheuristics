@@ -131,9 +131,7 @@ Calculate best path of n nodes and their weights using 2-OPT algorithm.
 
 Initial path is given or chosen at random using krandom().
 
-Big o: O(n^2 * k), where k is cost of calculating current permutation's distance. Here: O(n^3)
-
-It should be O(n^3 * k) if we want to keep swapping until we find a better path than first, but we've omitted it.
+Big o: O(n^3), where k is cost of calculating current permutation's distance. Here: O(n^3)
 
 ## Params:
 - `tsp_data::Dict`: `TSP` dataset.

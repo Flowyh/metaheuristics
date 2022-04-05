@@ -54,7 +54,7 @@ function main(args::Array{String})
     end
     println("Wilcoxon test for: Repetitive Nearest Neighbour and 2opt")
     println("H0: Distribution of (rnn prd - opt prd) has zero median")
-    println(SignedRankTest(rnn_prds, two_opt_prds))
+    println(SignedRankTest(two_opt_prds, rnn_prds))
   catch e
     println("Error")
     throw(e)
