@@ -1,12 +1,25 @@
 include("../TSPheuristics.jl")
 using .TSPheuristics
 
+"""
+Program usage info.
+"""
 function usage()
   println("Usage: julia hardcodedTest.jl [k] [algorithms(defualt=all), split by space]")
 end
 
 """
-Main program function
+Test heuristics on hardcoded set of TSPLib files.
+
+Test logic: testing.jl -> algorithmsTest()
+
+List of chosen files: testing.jl -> hardcodedData()
+
+## Params (inferred from cmd line arguments)
+
+- `args[1]` : k number of tests
+- `args[2]` : list of tested heuristics
+
 """
 function main(args::Array{String})
   if (length(args) < 1)
