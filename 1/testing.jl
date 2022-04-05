@@ -134,10 +134,24 @@ function BasicTSPTest(tsp_data::Dict, test_func::Function, objective::Function, 
   savefig(plt, "./plots/$now.png")
 end
 
+"""
+Generates prd for given data.
+
+## returns:
+- `Int`: Calculated prd (price-related differential).
+
+"""
 function prd(dist, optimal)
   return (dist - optimal) / optimal * 100.0
 end
 
+"""
+Generates Dict with key as TSP file name and value as best distance
+
+## returns:
+- `Dict` Dict with key as TSP file name and value as best distance.
+
+"""
 function hardcodedData()
   return Dict(
     "bayg29.tsp" => 1610,
