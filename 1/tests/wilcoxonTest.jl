@@ -32,6 +32,11 @@ function sort_keys(dict::Dict)
   return sort(collect(keys(dict)), by=lexicographic_cmp)
 end
 
+"""
+Runs Wilcoxon test on 2opt and repetitiveNearestNeighbour heuristics PRD values.
+
+# Requires generated jsons in ./jsons folder!!!
+"""
 function main(args::Array{String})
   if (length(args) < 1)
     println("Please provide at least 1 arguments.")
@@ -42,6 +47,7 @@ function main(args::Array{String})
     k = parse(Int, args[1])
     algs = ["2opt", "nn", "rnn", "krand"]
     data = read_files(algs, k)
+    if (data === Nothing) return end
 
     two_opt_prds = Vector{Real}()
     rnn_prds = Vector{Real}()
@@ -52,6 +58,7 @@ function main(args::Array{String})
     for k in sort_keys(data["repetitiveNearestNeighbour"]["prd"])
       push!(rnn_prds, Real(data["repetitiveNearestNeighbour"]["prd"][k][1]))
     end
+
     println("Wilcoxon test for: Repetitive Nearest Neighbour and 2opt")
     println("H0: Distribution of (rnn prd - opt prd) has zero median")
     println(SignedRankTest(two_opt_prds, rnn_prds))
