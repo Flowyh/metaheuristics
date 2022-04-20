@@ -10,9 +10,9 @@ end
 function move_invert()
   return (
     invert,
-    function(before, after, weights)
-      nodeWeightSum(after, weights)
+    function(path, move, weights)
+      x, y = move
+      nodeWeightSum(path, weights) # TODO: accelerate
     end
   )
 end
-
