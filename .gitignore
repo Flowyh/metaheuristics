@@ -24,4 +24,5 @@ docs/site/
 Manifest.toml
 
 # Skip data
-/data
+/1/tests/data
+/2/data
