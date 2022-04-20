@@ -13,7 +13,7 @@ function main(args::Array{String})
       initial_path,
       dict_tsp[:dimension],
       dict_tsp[:weights],
-      move_invert, 
+      move_swap, 
       function() end, 
       10
     )

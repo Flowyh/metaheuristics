@@ -1,7 +1,7 @@
 module TabuSearch
   using TimesDates
 
-  export move_invert
+  export move_invert, move_swap
   export tabuSearch
   export twoopt, nearestNeighbour, repetitiveNearestNeighbour, nodeWeightSum
   export openTSPFile, structToDict
@@ -57,7 +57,7 @@ module TabuSearch
         if (tabu_matrix[i][j]) continue end # If tabu, skip
         current_path = move(local_path, i, j)
         @assert isperm(current_path)
-        current_distance = distance(local_path, current_path, weights)
+        current_distance = distance(current_path, (x,y), weights)
         # If new neighbour is the best
         if (current_distance < local_distance && !(tabu_matrix[i][j])) # sanity_check
           local_distance = current_distance
