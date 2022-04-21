@@ -1,5 +1,5 @@
-include("./tabooSearch.jl")
-using .TabooSearch
+include("./tabuSearch.jl")
+using .TabuSearch
 using TSPLIB
 
 function main(args::Array{String})
@@ -9,11 +9,11 @@ function main(args::Array{String})
   dict_tsp = structToDict(tsp)
   initial_path = nearestNeighbour(dict_tsp)
   
-  println("Taboo search distance: $(tabooSearch(
+  println("Tabu search distance: $(tabuSearch(
       initial_path,
       dict_tsp[:dimension],
       dict_tsp[:weights],
-      move_invert, 
+      move_swap, 
       timeCriterion(10), # iterationsCriterion(10000),
       15,
       addAspiration,
