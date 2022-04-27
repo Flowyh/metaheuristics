@@ -7,19 +7,16 @@ function main(args::Array{String})
   else tsp = openTSPFile() end
 
   dict_tsp = structToDict(tsp)
-  initial_path = nearestNeighbour(dict_tsp)
+  initial_path = twoopt(dict_tsp)
   
   println("Tabu search distance: $(tabuSearch(
       initial_path,
       dict_tsp[:dimension],
       dict_tsp[:weights],
       move_swap, 
-      timeCriterion(10), # iterationsCriterion(10000),
-      15,
-      addAspiration,
-      0.0001,
-      -0.01,
-      1
+      iterationsCriterion(100000), # timeCriterion(10),
+      fld(dict_tsp[:dimension], 2),# 7,# trunc(Int, 2 * dict_tsp[:dimension] /  (1 + sqrt(5))),
+      0.01
     )[2]
   )")
   println("Two opt distance: $(nodeWeightSum(initial_path, dict_tsp[:weights]))")

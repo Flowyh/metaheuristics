@@ -6,7 +6,6 @@ module TabuSearch
   export tabuSearch
   export twoopt, nearestNeighbour, repetitiveNearestNeighbour, nodeWeightSum
   export openTSPFile, structToDict
-  export addAspiration, mulAspiration
   export iterationsCriterion, timeCriterion
 
   # DONE:
@@ -21,10 +20,8 @@ module TabuSearch
   # Akceleracja inverta (proste)
   # Pamiec dlugoterminowa jako stack
 
-
   # Aspiracja
   # 2 Wyboru rozwiązania początkowego (Hubert)
-  
 
   # 9/10 Optymalizacje kodu/wielowatkowosc - Julia moment (razem)
 
@@ -50,20 +47,14 @@ module TabuSearch
     move_funcs::Function,
     stop_criterion::Function,
     tabu_size::Int,
-    aspiration_update::Function,
-    aspiration_inc::Float64,
-    aspiration_dec::Float64,
-    occurence_threshold::Int
+    aspiration_threshold::Float64,
   )
     # Short-term memory
     tabu_list::Array{Tuple{Int, Int}} = [(-1, -1) for i in 1:tabu_size]
     tabu_matrix::Vector{BitVector} = [BitVector([0 for _ in 1:nodes]) for _ in 1:nodes]
 
-    # Long-term memory
-    solultions = Dict()
-
-    # Aspiration
-    aspiration::Float64 = 0.0
+    # # Long-term memory
+    # backtrack_jump_list = 
 
     # Move functions
     (move, distance) = move_funcs()
@@ -73,6 +64,7 @@ module TabuSearch
 
     # Starting point
     global_path::Vector{Int} = copy(initial_path)
+
     # Best solution
     the_bestest_path::Vector{Int} = copy(global_path)
     the_bestest_distance::Float64 = nodeWeightSum(the_bestest_path, weights)
@@ -86,35 +78,21 @@ module TabuSearch
       
       # Generate neighbours (2opt)
       for i in 1:nodes - 1, j in i+1:nodes
-        # If tabu and not enough aspiration, skip
-        # If picked tabu with enough aspiration, reset aspiration
-        if (tabu_matrix[i][j])
-          if (rand() > aspiration)
-            continue
-          else
-            aspiration = 0.0
-          end
-        end
         # Generate new path
         current_path = move(local_path, i, j)
-        # Check for long-term memory occurences
-        if (haskey(solultions, current_path))
-          if (solultions[current_path] > occurence_threshold)
-            println("SHUFFLE!")
-            shuffle!(global_path)
-            break
-          else
-            solultions[current_path] += 1
-          end
-        else solultions[current_path] = 1 end
+
         # If path is a proper permutation
         @assert isperm(current_path)
-        if (local_distance == typemax(Float64))
-          current_distance = nodeWeightSum(current_path, weights)
-        else
-          current_distance = distance(current_path, (i, j, local_distance), weights)
+
+        # Compute obj function
+        if (local_distance == typemax(Float64)) current_distance = nodeWeightSum(current_path, weights)
+        else current_distance = distance(current_path, (i, j, local_distance), weights) end
+
+        # Aspiration not satisfied
+        if (tabu_matrix[i][j] && current_distance > the_bestest_distance * (1 - aspiration_threshold))
+          continue
         end
-        # println(current_distance)
+
         # If new neighbour is the best
         if (current_distance < local_distance) # sanity_check
           new_move = (i, j)
@@ -136,17 +114,16 @@ module TabuSearch
         push!(tabu_list, (i, j))
         tabu_matrix[i][j] |= true
         tabu_matrix[j][i] |= true
+
         # Save local minimum for next iteration
         global_path = copy(local_path)
-        printDebug("Best local: $local_distance")
-        # If local minimum is better than blobal
+        # printDebug("Best local: $local_distance")
+
+        # If local minimum is better than global
         if (local_distance < the_bestest_distance)
           the_bestest_distance = local_distance
           the_bestest_path = copy(local_path)
           printDebug("BEST: $(the_bestest_distance)")
-          aspiration = aspiration_update(aspiration, aspiration_dec)
-        else
-          aspiration = aspiration_update(aspiration, aspiration_inc)
         end
       end
     end
