@@ -2,9 +2,9 @@ module TabuSearch
   using TimesDates
   using Random
 
-  export move_invert, move_swap, move_insert
+  export moveInvert, moveSwap, moveInsert
   export tabuSearch
-  export twoopt, nearestNeighbour, repetitiveNearestNeighbour, nodeWeightSum
+  export krandom, twoopt, nearestNeighbour, repetitiveNearestNeighbour, nodeWeightSum
   export openTSPFile, structToDict
   export iterationsCriterion, timeCriterion
 
@@ -35,6 +35,13 @@ module TabuSearch
   # Aspiracja -> o ile lepiej jest
   # jakies rozwiazanie
 
+  mutable struct MemoryCell
+    solution::Vector{Int}
+    move::Tuple{Int, Int}
+    tabu_list::Array{Tuple{Int, Int}}
+    tabu_matrix::Vector{BitVector}
+  end
+
   debug = true
   function printDebug(str::String)
     if (debug) println(str) end
@@ -44,23 +51,25 @@ module TabuSearch
     initial_path::Vector{Int},
     nodes::Int,
     weights::AbstractMatrix{Float64},
-    move_funcs::Function,
-    stop_criterion::Function,
+    moveFuncs::Function,
+    stopCriterion::Function,
     tabu_size::Int,
     aspiration_threshold::Float64,
+    backtrack_size::Int,
+    stagnation_limit::Int
   )
     # Short-term memory
     tabu_list::Array{Tuple{Int, Int}} = [(-1, -1) for i in 1:tabu_size]
     tabu_matrix::Vector{BitVector} = [BitVector([0 for _ in 1:nodes]) for _ in 1:nodes]
 
-    # # Long-term memory
-    # backtrack_jump_list = 
+    # Long-term memory
+    backtrack_jump_list::Array{MemoryCell} = []
 
     # Move functions
-    (move, distance) = move_funcs()
+    (move, distance) = moveFuncs()
 
     # Stop criterion functions
-    (stop_stat, stop_check, updateStopStat) = stop_criterion()
+    (stop_stat, stopCheck, updateStopStat) = stopCriterion()
 
     # Starting point
     global_path::Vector{Int} = copy(initial_path)
@@ -69,9 +78,12 @@ module TabuSearch
     the_bestest_path::Vector{Int} = copy(global_path)
     the_bestest_distance::Float64 = nodeWeightSum(the_bestest_path, weights)
 
+    # Stagnation
+    stagnation = 0
+
     while (true)
       stop_stat = updateStopStat(stop_stat)
-      if (stop_check(stop_stat)) return the_bestest_path, the_bestest_distance end
+      if (stopCheck(stop_stat)) return the_bestest_path, the_bestest_distance end
       local_path::Vector{Int} = copy(global_path)
       local_distance::Float64 = typemax(Float64)
       new_move::Tuple{Int, Int} = (-1, -1)
@@ -82,7 +94,7 @@ module TabuSearch
         current_path = move(local_path, i, j)
 
         # If path is a proper permutation
-        @assert isperm(current_path)
+        # @assert isperm(current_path)
 
         # Compute obj function
         if (local_distance == typemax(Float64)) current_distance = nodeWeightSum(current_path, weights)
@@ -94,6 +106,7 @@ module TabuSearch
         end
 
         # If new neighbour is the best
+        # Mutex here
         if (current_distance < local_distance) # sanity_check
           new_move = (i, j)
           local_distance = current_distance
@@ -101,30 +114,61 @@ module TabuSearch
         end
       end
 
-      # If we found a better move (didn't shuffle tight away)
-      if (new_move != (-1, -1))
-        local i, j = new_move
-        # remove from tabu list
-        untabu = popfirst!(tabu_list)
-        if (untabu != (-1, -1)) # remove from tabu matrix
-          tabu_matrix[untabu[1]][untabu[2]] &= false 
-          tabu_matrix[untabu[2]][untabu[1]] &= false
-        end
-        # Add to tabu
-        push!(tabu_list, (i, j))
-        tabu_matrix[i][j] |= true
-        tabu_matrix[j][i] |= true
+      local i, j = new_move
 
-        # Save local minimum for next iteration
-        global_path = copy(local_path)
-        # printDebug("Best local: $local_distance")
+      # Remove from tabu list
+      untabu = popfirst!(tabu_list)
+      if (untabu != (-1, -1)) # remove from tabu matrix
+        tabu_matrix[untabu[1]][untabu[2]] &= false
+        tabu_matrix[untabu[2]][untabu[1]] &= false
+      end
 
-        # If local minimum is better than global
-        if (local_distance < the_bestest_distance)
-          the_bestest_distance = local_distance
-          the_bestest_path = copy(local_path)
-          printDebug("BEST: $(the_bestest_distance)")
+      # Add to tabu
+      push!(tabu_list, (i, j))
+      tabu_matrix[i][j] |= true
+      tabu_matrix[j][i] |= true
+
+      # Check for stagnation, backtrack if necessary
+      if (stagnation > stagnation_limit)
+        if (length(backtrack_jump_list) > 0)
+          printDebug("STAGNATION")
+          backtrack_cell = pop!(backtrack_jump_list)
+          global_path = backtrack_cell.solution
+          tabu_list = backtrack_cell.tabu_list
+          tabu_matrix = backtrack_cell.tabu_matrix
+        else
+          printDebug("RESET")
+          # printDebug("Tabu: $tabu_list")
+          global_path = initial_path
         end
+        stagnation = 0
+        continue
+      end
+
+      # Save local minimum for next iteration
+      global_path = copy(local_path)
+      # printDebug("Best local: $local_distance")
+
+      # If local minimum is better than global
+      if (local_distance < the_bestest_distance)
+        the_bestest_distance = local_distance
+        the_bestest_path = copy(local_path)
+        printDebug("BEST: $(the_bestest_distance)")
+
+        # Add long-term memory cell
+        NewMemoryCell = MemoryCell(local_path, new_move, tabu_list, tabu_matrix)
+        push!(backtrack_jump_list, NewMemoryCell)
+
+        # If backtrack memory size exceeded
+        if (length(backtrack_jump_list) > backtrack_size)
+          popfirst!(backtrack_jump_list)
+        end
+
+        # Reset stagnation counter
+        stagnation = 0
+      else
+        # Increment stagnation counter
+        stagnation += 1
       end
     end
   

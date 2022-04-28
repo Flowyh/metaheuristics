@@ -7,7 +7,7 @@ function invert(path, x, y)
   return inverted_path
 end
 
-function move_invert()
+function moveInvert()
   return (
     invert,
     function(path, move, weights)
@@ -36,7 +36,7 @@ function swap(path, x, y)
   return swapped_path
 end
 
-function move_swap()
+function moveSwap()
   return (
     swap,
     function(path, move, weights)
@@ -87,7 +87,7 @@ function insert(path, x, y)
   return inserted_path
 end
 
-function move_insert()
+function moveInsert()
   return (
     insert,
     function(path, move, weights)

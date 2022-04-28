@@ -13,10 +13,12 @@ function main(args::Array{String})
       initial_path,
       dict_tsp[:dimension],
       dict_tsp[:weights],
-      move_swap, 
+      moveInvert,
       iterationsCriterion(100000), # timeCriterion(10),
       fld(dict_tsp[:dimension], 2),# 7,# trunc(Int, 2 * dict_tsp[:dimension] /  (1 + sqrt(5))),
-      0.01
+      0.05,
+      15,
+      2000
     )[2]
   )")
   println("Two opt distance: $(nodeWeightSum(initial_path, dict_tsp[:weights]))")
