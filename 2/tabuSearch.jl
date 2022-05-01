@@ -1,6 +1,7 @@
 module TabuSearch
   using TimesDates
   using Random
+  using FLoops
 
   export moveInvert, moveSwap, moveInsert
   export tabuSearch
@@ -15,25 +16,18 @@ module TabuSearch
   # 4 Sposób przeglądu sąsiedztwa = wygeneruj ruch, jesli ruch w memory, skip, jesli nie, liczymy obj, przy okazji sprawdzamy z 8 watkow na raz
   # 8 Warunek stopu algorytmu (Ja)
   # 7 Wykrywanie cykli/stagnacji + mechanizm resetów/powrotów - jak 100 razy to samo, to wracamy (6) (razem)
-  
-  # TODO
   # Akceleracja inverta (proste)
   # Pamiec dlugoterminowa jako stack
-
-  # Aspiracja
-  # 2 Wyboru rozwiązania początkowego (Hubert)
-
   # 9/10 Optymalizacje kodu/wielowatkowosc - Julia moment (razem)
 
-  # INFO:
-  # Dlugoterminwoa:
-  # initial -(1,3)-> p1
-  # stack ruchow -> przechowujemy ruch poprzedzajacy i wykonane z tego sprawdzone ruchy
-  # cofamy do poprzedniego i dodajemy do sprawdzonych ruchow
-
-  # Aspiracja:
-  # Aspiracja -> o ile lepiej jest
-  # jakies rozwiazanie
+  # TODO:
+  # 2 Wyboru rozwiązania początkowego i parametrow (CLI) (Hubert)
+  # Funkcja do badań (Ja)
+  # Typy badań (razem)
+  # Ploty (Hubert)
+  # Markdown (Ja)
+  # Komentarze (Razem)
+  # Cleanup (Razem)
 
   mutable struct MemoryCell
     solution::Vector{Int}
@@ -45,6 +39,22 @@ module TabuSearch
   debug = true
   function printDebug(str::String)
     if (debug) println(str) end
+  end
+
+  function range_split(nodes)::Vector{Tuple{Int, Int}}
+    threads::Int = Threads.nthreads()
+    splits::Int = cld(nodes, threads)
+    if (splits == 0) return Vector{Tuple{Int, Int}}([(1,nodes)]) end
+    return Vector{Tuple{Int, Int}}(
+      [
+        if (i+splits < nodes) 
+          Tuple{Int,Int}((i+1,i+splits)) 
+        else 
+          Tuple{Int,Int}((i+1, nodes)) 
+        end 
+        for i in 0:splits:nodes-1
+      ]
+    )
   end
 
   function tabuSearch(
@@ -66,7 +76,7 @@ module TabuSearch
     backtrack_jump_list::Array{MemoryCell} = []
 
     # Move functions
-    (move, distance) = moveFuncs()
+    (move, distance, j_start) = moveFuncs()
 
     # Stop criterion functions
     (stop_stat, stopCheck, updateStopStat) = stopCriterion()
@@ -77,28 +87,35 @@ module TabuSearch
     # Best solution
     the_bestest_path::Vector{Int} = copy(global_path)
     the_bestest_distance::Float64 = nodeWeightSum(the_bestest_path, weights)
+    
+    # Local solution
+    local_path::Vector{Int} = copy(global_path)
+    local_distance::Float64 = typemax(Float64)
+    new_move::Tuple{Int, Int} = (-1, -1)
 
     # Stagnation
     stagnation = 0
 
-    while (true)
-      stop_stat = updateStopStat(stop_stat)
-      if (stopCheck(stop_stat)) return the_bestest_path, the_bestest_distance end
-      local_path::Vector{Int} = copy(global_path)
-      local_distance::Float64 = typemax(Float64)
-      new_move::Tuple{Int, Int} = (-1, -1)
-      
-      # Generate neighbours (2opt)
-      for i in 1:nodes - 1, j in i+1:nodes
+    # Thread splits
+    splits::Vector{Tuple{Int, Int}} = range_split(nodes)
+
+    function search_neighbourhood(
+      range::Tuple{Int, Int}, 
+    )::Tuple{Vector{Int}, Float64, Tuple{Int, Int}}
+      start::Int, s_end::Int = range
+      dist::Float64 = typemax(Float64)
+      mv::Tuple{Int, Int} = (-1, 1)
+      for i in start:s_end, j in j_start(i):nodes
+        if (i == j) continue end
         # Generate new path
-        current_path = move(local_path, i, j)
+        current_path::Vector{Int} = move(local_path, i, j)
 
         # If path is a proper permutation
         # @assert isperm(current_path)
 
         # Compute obj function
-        if (local_distance == typemax(Float64)) current_distance = nodeWeightSum(current_path, weights)
-        else current_distance = distance(current_path, (i, j, local_distance), weights) end
+        if (dist == typemax(Float64)) current_distance::Float64 = nodeWeightSum(current_path, weights)
+        else current_distance = distance(current_path, (i, j, dist), weights) end
 
         # Aspiration not satisfied
         if (tabu_matrix[i][j] && current_distance > the_bestest_distance * (1 - aspiration_threshold))
@@ -106,13 +123,33 @@ module TabuSearch
         end
 
         # If new neighbour is the best
-        # Mutex here
-        if (current_distance < local_distance) # sanity_check
-          new_move = (i, j)
-          local_distance = current_distance
+        if (current_distance < dist) # sanity_check
+          mv = (i, j)
+          dist = current_distance
           local_path = copy(current_path)
         end
       end
+      return (local_path, dist, mv)
+    end
+
+    while (true)
+      stop_stat = updateStopStat(stop_stat)
+      if (stopCheck(stop_stat)) return the_bestest_path, the_bestest_distance end
+
+      # Parallel neighbourhood searching using FLoops.jl
+      @floop for split in splits
+        (tmp_path, tmp_distance, tmp_move) = search_neighbourhood(split)
+        # Find minimal distance (thread-safe)
+        @reduce() do (path = Vector{Int}(undef, 0); tmp_path) , (dist = typemax(Float64); tmp_distance) , (mv = (-1,-1); tmp_move)
+          if (tmp_distance < dist)
+            path = tmp_path
+            dist = tmp_distance
+            mv = tmp_move
+          end
+        end
+      end
+      # Assign found values
+      (local_path, local_distance, new_move) = (path, dist, mv)
 
       local i, j = new_move
 

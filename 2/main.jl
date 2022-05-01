@@ -8,19 +8,19 @@ function main(args::Array{String})
 
   dict_tsp = structToDict(tsp)
   initial_path = twoopt(dict_tsp)
-  
-  println("Tabu search distance: $(tabuSearch(
-      initial_path,
-      dict_tsp[:dimension],
-      dict_tsp[:weights],
-      moveInvert,
-      iterationsCriterion(100000), # timeCriterion(10),
-      fld(dict_tsp[:dimension], 2),# 7,# trunc(Int, 2 * dict_tsp[:dimension] /  (1 + sqrt(5))),
-      0.05,
-      15,
-      2000
-    )[2]
-  )")
+  time = @elapsed distance = tabuSearch(
+    initial_path,
+    dict_tsp[:dimension],
+    dict_tsp[:weights],
+    moveInvert,
+    iterationsCriterion(1000), # timeCriterion(10),
+    fld(dict_tsp[:dimension], 2),# 7,# trunc(Int, 2 * dict_tsp[:dimension] /  (1 + sqrt(5))),
+    0.05,
+    15,
+    200
+  )[2]
+  println("Time elapsed: $(time)s")
+  println("Tabu search distance: $(distance)")
   println("Two opt distance: $(nodeWeightSum(initial_path, dict_tsp[:weights]))")
 end 
 
