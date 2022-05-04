@@ -100,15 +100,16 @@ module TabuSearch
     splits::Vector{Tuple{Int, Int}} = range_split(nodes)
 
     function search_neighbourhood(
-      range::Tuple{Int, Int}, 
+      range::Tuple{Int, Int}
     )::Tuple{Vector{Int}, Float64, Tuple{Int, Int}}
       start::Int, s_end::Int = range
       dist::Float64 = typemax(Float64)
       mv::Tuple{Int, Int} = (-1, 1)
+      path::Vector{Int} = copy(local_path)
       for i in start:s_end, j in j_start(i):nodes
         if (i == j) continue end
         # Generate new path
-        current_path::Vector{Int} = move(local_path, i, j)
+        current_path::Vector{Int} = move(path, i, j)
 
         # If path is a proper permutation
         # @assert isperm(current_path)
@@ -126,10 +127,10 @@ module TabuSearch
         if (current_distance < dist) # sanity_check
           mv = (i, j)
           dist = current_distance
-          local_path = copy(current_path)
+          path = copy(current_path)
         end
       end
-      return (local_path, dist, mv)
+      return (path, dist, mv)
     end
 
     while (true)

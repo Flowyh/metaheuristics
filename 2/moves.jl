@@ -114,6 +114,6 @@ function moveInsert()::Tuple{Function, Function, Function}
       # @assert result == nodeWeightSum(path, weights)
       return result
     end,
-    function(_) return 1 end
+    function(i::Int) return i + 1 end
   )
 end

@@ -26,3 +26,4 @@ Manifest.toml
 # Skip data
 /1/tests/data
 /2/data
+/2/tests/jsons
