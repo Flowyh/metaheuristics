@@ -4,12 +4,40 @@ import JSON
 
 ENV["GKSwstype"] = "100"
 
-alg_names = Dict(
+const alg_names = Dict(
   "twoopt" => "2opt",
   "nearestNeighbour" => "nn",
   "repetitiveNearestNeighbour" => "rnn",
   "krandom" => "krand",
+  "tabuSearch" => "tabu",
 )
+
+const modes = Dict(
+  "move" => "Move type comparison for Tabu Search",
+  "aspiration" => "Aspiration value comparison for Tabu Search",
+  "tabu" => "Tabu size comparison for Tabu Search",
+  "backtrack" => "Backtrack size comparison for Tabu Search",
+  "stop" => "Stop criterion limit comparison for Tabu Search",
+  "threads" =>  "Number of threads comparison for Tabu Search"
+)
+
+function tabuParameter(f_split, mode::String)
+  if (mode == "move")
+    return f_split[3]
+  elseif (mode == "aspiration")
+    return f_split[6]
+  elseif (mode == "tabu")
+    return f_split[5]
+  elseif (mode == "backtrack")
+    return f_split[7]
+  elseif (mode == "stop")
+    return f_split[8]
+  elseif (mode == "threads")
+    return f_split[13]
+  else
+    return ""
+  end
+end
 
 function str_to_int_vector(a::Array{String})
   return map(x -> parse(Int, x), a)
@@ -25,23 +53,20 @@ function sort_keys(dict::Dict)
   return sort(collect(keys(dict)), by=lexicographic_cmp)
 end
 
-function read_files(algs::Array{String}, k::Int, date::String)
+function read_files(algs::Array{String}, k::Int, date::String, mode::String)
   !isdir("./jsons") && return
   data = Dict()
   foreach(readdir("./jsons")) do f
     f_split = split(strip(f), "-")
     currentFileDate = join([f_split[end-2],f_split[end-1],f_split[end]], "-")
     currentFileDate = strip(currentFileDate, ['.','j','s','o','n'])
-    println(currentFileDate)
-    println(date)
-    if (occursin(date, currentFileDate)) 
-      if (alg_names[f_split[1]] in algs
-        && "k$k" in f_split
-      )
-        data[f_split[1]] = JSON.parsefile("./jsons/$f"; dicttype=Dict, inttype=Int, use_mmap=true)
-      end      
+    if (occursin(date, currentFileDate) && alg_names[f_split[1]] in algs)
+      name = f_split[1]
+      if (name == "tabuSearch" && mode != "none") name *= "-$(tabuParameter(f_split, mode))" end
+      data[name] = JSON.parsefile("./jsons/$f"; dicttype=Dict, inttype=Int, use_mmap=true)    
     end
   end
+  println(keys(data))
   return data
 end
 
@@ -96,9 +121,9 @@ function plot_avgs(ns::Vector{Int}, data, step::Int, s_end::Int, k::Int, alg, xl
   return (plt, avgs)
 end
 
-function plots(step::Int, s_end::Int, k::Int, algs::Array{String}, date::String)
+function plots(step::Int, s_end::Int, k::Int, algs::Array{String}, date::String, mode::String)
   isdir("./plots") || mkdir("./plots")
-  data = read_files(algs, k, date)
+  data = read_files(algs, k, date, mode)
   avg_prd = Vector{Vector{Float64}}()
   avg_best_path = Vector{Vector{Float64}}()
   avg_times = Vector{Vector{Float64}}()
@@ -111,8 +136,6 @@ function plots(step::Int, s_end::Int, k::Int, algs::Array{String}, date::String)
     isdir("./plots/$key") || mkdir("./plots/$key")
     push!(algs, key)
     plot_path = "./plots/$key/$key-k$k"
-
-
     ns = str_to_int_vector(sort_keys(data[key]["time"]))
     ns1 = str_to_int_vector(sort_keys(data[key]["prd"]))
     ns2 = str_to_int_vector(sort_keys(data[key]["best"]))
@@ -144,7 +167,7 @@ function plots(step::Int, s_end::Int, k::Int, algs::Array{String}, date::String)
 end
 
 function usage()
-  println("Usage: julia plotting.jl [step] [end] [k] [algorithms(defualt=all), split by space]")
+  println("Usage: julia plotting.jl [step] [end] [k] [date] [algorithms(defualt=all), split by space] [mode(default=none)]")
 end
 
 function main(args::Array{String})
@@ -158,17 +181,21 @@ function main(args::Array{String})
     s_end = parse(Int, args[2])
     k = parse(Int, args[3])
     date = args[4]
-    algs = ["2opt", "nn", "rnn", "krand"]
-    if (length(args) == 5)
+    algs = collect(values(alg_names))
+    if (length(args) >= 5)
       algs::Vector{String} = split(strip(args[5]))
       println(algs)
     end
-    if !issubset(algs, ["2opt", "nn", "rnn", "krand"])
+    if !issubset(algs, values(alg_names))
       println("Invalid algorithm type provided")
-      println("Options: 2opt, nn, rnn, krand")
+      println("Options: 2opt, nn, rnn, krand, tabu")
       exit(1)
     end 
-    plots(step, s_end, k, algs, date)
+    if (length(args) >= 6)
+      if (args[6] in keys(modes)) mode = args[6]
+      else mode = "none" end
+    end
+    plots(step, s_end, k, algs, date, mode)
   catch e
     println("Error")
     throw(e)

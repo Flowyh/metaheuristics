@@ -28,3 +28,5 @@ Manifest.toml
 /2/data
 /2/tests/jsons
 /2/jsons
+/2/plots
+/2/backup-plots

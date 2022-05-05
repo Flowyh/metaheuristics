@@ -8,7 +8,7 @@ function usage()
    Usage: julia main.jl
    ARGS:
    1: path to TSP file or data type: ["hardcoded", "random"]
-   2: starting solution [krand, 2opt, nb, nnb]
+   2: starting solution [krand, 2opt, nn, rnn]
    3: move type [swap, insert, invert]
    4: stop criterion [time, iteration]
    5: stop criterion limit [seconds, number of iterations]
@@ -16,7 +16,7 @@ function usage()
    7: aspiration as percentage [0-100]
    8: backtrack size [uint]
    9: stagnation limit [uint]
-   10: other funcs (comma separated) from: [krand, 2opt, nb, nnb] or "all"
+   10: other funcs (comma separated) from: [krand, 2opt, nn, rnn] or "all"
    11: repeats (if mode == hardcoded or random) [uint]
    12: start number of nodes (if mode == random) [uint]
    13: step number of nodes (if mode == random) [uint]
@@ -27,7 +27,7 @@ end
 
 
 function main(args::Array{String})
-  startingAlgs = Dict("krand" => krandom, "2opt" => twoopt, "nb" => nearestNeighbour, "nnb" => repetitiveNearestNeighbour)
+  startingAlgs = Dict("krand" => krandom, "2opt" => twoopt, "nn" => nearestNeighbour, "rnn" => repetitiveNearestNeighbour)
   moves = Dict("swap" => moveSwap, "insert" => moveInsert, "invert" => moveInvert)
   stopCriteria = Dict("time" => timeCriterion, "iteration" => iterationsCriterion)
 
@@ -57,7 +57,7 @@ function main(args::Array{String})
       funcs = split(args[10], ",")
       for func in funcs
         if (haskey(startingAlgs, func))
-          push!(tabuSearch, startingAlgs[func])
+          push!(other_funcs, startingAlgs[func])
         end
       end
     end
