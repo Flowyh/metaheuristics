@@ -47,9 +47,9 @@ function main(args::Array{String})
     move = moves[args[3]]
     stopCriterion = stopCriteria[args[4]]
     stopCritAmount = parse(Int, args[5])
-    tabuSize = parse(Int, args[6])
+    tabuSize = args[6]
     aspiration = parse(Int, args[7])
-    backtrackSize = parse(Int, args[8])
+    backtrackSize = args[8]
     stagnationLimit = parse(Int, args[9])
     other_funcs = Array{Function}([tabuSearch, values(startingAlgs)...])
     if (length(args) >= 10 && args[10] != "all")

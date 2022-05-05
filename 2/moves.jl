@@ -43,7 +43,7 @@ function moveSwap()::Tuple{Function, Function, Function}
     function(path::Vector{Int}, move::Tuple{Int, Int, Float64}, weights::Matrix{Float64})
       x::Int, y::Int, distance::Float64 = move
 
-      nodes::Int = size(weights, 1)::Float64
+      nodes::Int = size(weights, 1)
       prev_x::Int = x - 1 == 0 ? nodes : x - 1
       prev_y::Int = y - 1 == 0 ? nodes : y - 1
       next_x::Int = x + 1 > nodes ? 1 : x + 1

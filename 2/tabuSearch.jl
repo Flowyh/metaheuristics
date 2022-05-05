@@ -99,9 +99,7 @@ module TabuSearch
     # Thread splits
     splits::Vector{Tuple{Int, Int}} = range_split(nodes)
 
-    function search_neighbourhood(
-      range::Tuple{Int, Int}
-    )::Tuple{Vector{Int}, Float64, Tuple{Int, Int}}
+    function search_neighbourhood(range::Tuple{Int, Int})::Tuple{Vector{Int}, Float64, Tuple{Int, Int}}
       start::Int, s_end::Int = range
       dist::Float64 = typemax(Float64)
       mv::Tuple{Int, Int} = (-1, 1)

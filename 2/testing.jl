@@ -62,6 +62,28 @@ function tabuTSPTest(functions::Array{Function}, k::Int, tabu_params::Array{Any}
   end
 
   (mv, stopFun, limit, ts, at, bs, sl) = tabu_params
+  ts_div = false
+  ts_divisor = -1
+  if (length(ts) > 3 && ts[1:3] == "div" && tryparse(Int, ts[4:end]) !== nothing)
+    ts_div = true
+    ts_divisor = parse(Int, ts[4:end])
+  elseif (typeof(ts) != Int && tryparse(Int, ts) !== nothing)
+    ts = parse(Int, ts)
+  else
+    ts = 7
+  end
+
+  bs_div = false
+  bs_divisor = -1
+  if (length(bs) > 3 && bs[1:3] == "div" && tryparse(Int, bs[4:end]) !== nothing)
+    bs_div = true
+    bs_divisor = parse(Int, bs[4:end])
+  elseif (typeof(bs) != Int && tryparse(Int, bs) !== nothing)
+    bs = parse(Int, bs)
+  else
+    bs = 15
+  end
+
   stop = stopFun(limit)
   
   for key in keys(results)
@@ -72,14 +94,18 @@ function tabuTSPTest(functions::Array{Function}, k::Int, tabu_params::Array{Any}
   for problem in collect(keys(problems))
     println("PROBLEM: $problem")
     n = match(reg, problem)[1]
-    tsp_data = structToDict(readTSP("../data/all/$problem"))
+    tsp_data = structToDict(readTSP("./data/all/$problem"))
+    current_ts = ts
+    current_bs = bs
+    if (ts_div) current_ts = fld(tsp_data[:dimension], ts_divisor) end
+    if (bs_div) current_bs = fld(tsp_data[:dimension], bs_divisor) end
     for func in functions
       results[func]["time"][n] = []
       results[func]["best"][n] = []
       results[func]["prd"][n] = []
       if (func == tabuSearch)
         path = twoopt(tsp_data)
-        (_, best_dist, time) = testTabuSearch(path, tsp_data[:dimension], tsp_data[:weights], mv, stop, ts, at, bs, sl)
+        (_, best_dist, time) = testTabuSearch(path, tsp_data[:dimension], tsp_data[:weights], mv, stop, current_ts, at, current_bs, sl)
         push!(results[func]["time"][n], time)
       else
         best_path = krandom(tsp_data, 1)
@@ -104,7 +130,7 @@ function tabuTSPTest(functions::Array{Function}, k::Int, tabu_params::Array{Any}
     end
   end
 
-  now = Dates.now()
+  now = round(Dates.now(), Dates.Second(1))
   isdir("./jsons") || mkdir("./jsons")
   for func in functions
     file_str = "./jsons/$(func)-k$k-$now.json"
@@ -132,6 +158,28 @@ function tabuRandomTest(
   end
 
   (mv, stopFun, limit, ts, at, bs, sl) = tabu_params
+  ts_div = false
+  ts_divisor = -1
+  if (length(ts) > 3 && ts[1:3] == "div" && tryparse(Int, ts[4:end]) !== nothing)
+    ts_div = true
+    ts_divisor = parse(Int, ts[4:end])
+  elseif (typeof(ts) != Int && tryparse(Int, ts) !== nothing)
+    ts = parse(Int, ts)
+  else
+    ts = 7
+  end
+
+  bs_div = false
+  bs_divisor = -1
+  if (length(bs) > 3 && bs[1:3] == "div" && tryparse(Int, bs[4:end]) !== nothing)
+    bs_div = true
+    bs_divisor = parse(Int, bs[4:end])
+  elseif (typeof(bs) != Int && tryparse(Int, bs) !== nothing)
+    bs = parse(Int, bs)
+  else
+    bs = 15
+  end
+  
   stop = stopFun(limit)
   
   for key in keys(results)
@@ -144,13 +192,17 @@ function tabuRandomTest(
     tsp_data = Dict(:dimension => n, :weights => distances)
     best_func = typemax(Int)
     best_dist_funcs = Dict()
+    current_ts = ts
+    current_bs = bs
+    if (ts_div) current_ts = fld(tsp_data[:dimension], ts_divisor) end
+    if (bs_div) current_bs = fld(tsp_data[:dimension], bs_divisor) end
     for func in functions
       results[func]["time"][n] = []
       results[func]["best"][n] = []
       results[func]["prd"][n] = []
       if (func == tabuSearch)
         path = twoopt(tsp_data)
-        (_, best_dist, time) = testTabuSearch(path, tsp_data[:dimension], tsp_data[:weights], mv, stop, ts, at, bs, sl)
+        (_, best_dist, time) = testTabuSearch(path, tsp_data[:dimension], tsp_data[:weights], mv, stop, current_ts, at, current_bs, sl)
         push!(results[func]["time"][n], time)
       else
         best_path = krandom(tsp_data, 1)
@@ -179,7 +231,7 @@ function tabuRandomTest(
     end
   end
 
-  now = Dates.now()
+  now = round(Dates.now(), Dates.Second(1))
   isdir("./jsons") || mkdir("./jsons")
   for func in functions
     file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-$now.json"
