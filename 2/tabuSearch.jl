@@ -9,26 +9,18 @@ module TabuSearch
   export openTSPFile, structToDict
   export iterationsCriterion, timeCriterion
 
-  # DONE:
-  # 1 Implementacja deterministyczna/probabilistyczna
-  # 5 Struktura, długość i sposób obsługi pamięci krótkoterminowej - lista tabu + matrix
-  # 6 Pamięć długoterminowa - wybieranie lepszych popraw? (razem)
-  # 4 Sposób przeglądu sąsiedztwa = wygeneruj ruch, jesli ruch w memory, skip, jesli nie, liczymy obj, przy okazji sprawdzamy z 8 watkow na raz
-  # 8 Warunek stopu algorytmu (Ja)
-  # 7 Wykrywanie cykli/stagnacji + mechanizm resetów/powrotów - jak 100 razy to samo, to wracamy (6) (razem)
-  # Akceleracja inverta (proste)
-  # Pamiec dlugoterminowa jako stack
-  # 9/10 Optymalizacje kodu/wielowatkowosc - Julia moment (razem)
+  """
+  An instance of long-term memory unit in tabu search.
+  Essentially, it's an object storing current solution, tabu list (and it's matrix) and move leading to given solution (currently unused).
 
-  # TODO:
-  # 2 Wyboru rozwiązania początkowego i parametrow (CLI) (Hubert)
-  # Funkcja do badań (Ja)
-  # Typy badań (razem)
-  # Ploty (Hubert)
-  # Markdown (Ja)
-  # Komentarze (Razem)
-  # Cleanup (Razem)
-
+  # Params: 
+  
+  - `solution::Vector{Int}` - chosen path for given TSP dataset,
+  - `move::Tuple{Int, Int}` - move arguments leading to given solution,
+  - `tabu_list::Array{Tuple{Int, Int}}` - list of forbidden moves for given solution,
+  - `tabu_matrix::Vector{BitVector}` - matrix of all possible moves for current TSP dataset with marked tabu moves (needed for O(1) lookup time).
+  
+  """
   mutable struct MemoryCell
     solution::Vector{Int}
     move::Tuple{Int, Int}
@@ -36,12 +28,29 @@ module TabuSearch
     tabu_matrix::Vector{BitVector}
   end
 
+  # Just a debugging print, nothing interesting.
   debug = true
   function printDebug(str::String)
     if (debug) println(str) end
   end
 
-  function range_split(nodes)::Vector{Tuple{Int, Int}}
+  """
+      range_split(nodes)
+
+  A helper function splitting an integer range ranging from 1 to nodes evenly, based on current number of nodes assigned to Julia's REPL.
+  It is used to properly assign checked neighbourhood range for each thread, so we can parallelize everything properly.
+
+  # Params:
+
+  - `nodes::Int` - number of nodes for given TSP dataset.
+
+  # Returns:
+
+  - `Vector{Tuple{Int, Int}}` - a vector of evenly split integer range ranging from 1 to nodes based on current number of threads.
+
+  For example, if we want to split an integer range from 1 to 10 and we've assigned 2 threads to run this program, this function would return two even ranges for each thread: (1,5) and (6,10)
+  """
+  function range_split(nodes::Int)::Vector{Tuple{Int, Int}}
     threads::Int = Threads.nthreads()
     splits::Int = cld(nodes, threads)
     if (splits == 0) return Vector{Tuple{Int, Int}}([(1,nodes)]) end
@@ -57,6 +66,42 @@ module TabuSearch
     )
   end
 
+  """
+      tabuSearch(initial_path, nodes, weights, moveFuncs, stopCriterion, tabu_size, aspiration_threshold, backtrack_size, stagnation_limit)
+
+  Our implementation of Tabu Search heuristic.
+
+  It meets all the requirements provided at the task descrpition:
+  1. It is fully deterministic.
+  2. An external CLI is provided to setup all parameters and choose a starting solution (initial_path).
+  3. Fully compatibile with 3 different move types (moveFuncs): insert, invert and swap.
+  4. Proper neighbourhood searching logic.
+  5. Tabu list implementation + tabu list lookup time in O(1).
+  6. Long-term memory and proper backtracking.
+  7. Stagnation detection based on number of not improving iteartions.
+  8. Stop criteria based on elapsed time or number of iterations (stopCriterion).
+  9. Acceleration of insert, invert and swap, tabu list lookup in O(1), some minor Julia performance improvements.
+  10. Parallel neighbourhood searching.
+
+  We've also implemented an aspiration mechanism, which lets banned moves to be picked, only if they would lead us to the path that is better than (1 - aspiration_threshold) * 100% of best possible solution so far.
+
+  # Params:
+
+  - `initial_path::Vector{Int}` - initial solution of current TSP dataset as vector of nodes' indexes,
+  - `nodes::Int` - number of nodes in current TSP dataset,
+  - `weights::AbstractMatrix{Float64}` - a matrix of weights between current TSP dataset's nodes,
+  - `moveFuncs::Function` - a generic functions wrapper describing one of possible moves: swap, insert and invert, see moves.jl for more information,
+  - `stopCriterion::Function` -  a generic functions wrapper describing stop critiera for Tabu Search heuristic, see stopCriteria.jl for more information,
+  - `tabu_size::Int` - size of tabu list in Tabu Search heuristic,
+  - `aspiration_threshold::Float64` - an error percentage used to let banned moves to be picked, if it improve our solution, see above,
+  - `backtrack_size::Int` - size of long-term memory (backtrack list),
+  - `stagnation_limit::Int` - number of iterations without improvement, after which we would have to backtrack to previous best solution (after which we know that we are stuck at local minimum).
+
+  # Returns:
+
+  - `Tuple{Float64, Vector{Int}}` - best computed TSP dataset objective function value and computed solution.
+
+  """
   function tabuSearch(
     initial_path::Vector{Int},
     nodes::Int,
@@ -99,6 +144,22 @@ module TabuSearch
     # Thread splits
     splits::Vector{Tuple{Int, Int}} = range_split(nodes)
 
+    """
+        search_neighbourhood(range)
+
+    Perform neighbourhood seraching for Tabu Search heuristic on given range.
+
+    Check every possible move for given range and return best found solution, objective function value and move that lead to that solution.
+
+    # Params:
+
+    - `range::Tuple{Int, Int}` - a range to be checked.
+
+    # Returns:
+
+    - `Tuple{Vector{Int}, Float64, Tuple{Int, Int}}` - best possible solution, it's objective function value and move that lead to this solution.
+
+    """
     function search_neighbourhood(range::Tuple{Int, Int})::Tuple{Vector{Int}, Float64, Tuple{Int, Int}}
       start::Int, s_end::Int = range
       dist::Float64 = typemax(Float64)

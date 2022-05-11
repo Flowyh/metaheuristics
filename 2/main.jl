@@ -117,18 +117,19 @@ function main(args::Array{String})
       tsp = readTSP(args[1])
       dict_tsp = structToDict(tsp)
       initial_path = startingFunc(dict_tsp)
-      println("Tabu search distance: $(tabuSearch(
+      time = @elapsed distance = tabuSearch(
         initial_path,
         dict_tsp[:dimension],
         dict_tsp[:weights],
         move,
         stopCriterion(stopCritAmount), # timeCriterion(10),
-        tabuSize,        #fld(dict_tsp[:dimension], 2),# 7,# trunc(Int, 2 * dict_tsp[:dimension] /  (1 + sqrt(5))),
+        parse(Int, tabuSize),        #fld(dict_tsp[:dimension], 2),# 7,# trunc(Int, 2 * dict_tsp[:dimension] /  (1 + sqrt(5))),
         0.01 * aspiration,
-        backtrackSize,
+        parse(Int, backtrackSize),
         stagnationLimit
-        )[2]
-      )")
+      )[2]
+      println("Tabu search distance: $(distance)")
+      println("Tabu search time: $(time)s")
       println("Two opt distance: $(nodeWeightSum(initial_path, dict_tsp[:weights]))")
     end
   catch e
