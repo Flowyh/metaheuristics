@@ -67,6 +67,23 @@ function testTabuSearch(path, nodes, weights, mv, stop, ts, at, bs, sl)
     return ([], best_dist, (test_end - test_start) * 1e-6)
 end
 
+"""
+
+Heuristics test logic for hardcoded set of TSPlib files (see function above).
+
+For tabuSearch in functions array run k tests and save time, best path distance and PRD into results Dict.
+
+Repeat for each problem in hardcoded dict.
+
+Save results to .json file.
+
+## Params
+
+- `functions::Array{Function}` : array of chosen heuristics (see algorithms.jl for available options)
+- `k` : number of performed tests for each TSPlib dataset
+- `tabu_params` : parameters used in tabuSearch
+
+"""
 function tabuTSPTest(functions::Array{Function}, k::Int, tabu_params::Array{Any})
   results = Dict()
   problems = hardcodedData()
@@ -157,6 +174,25 @@ function tabuTSPTest(functions::Array{Function}, k::Int, tabu_params::Array{Any}
   end
 end
 
+"""
+
+Heuristics test logic for hardcoded set of TSPlib files (see function above).
+
+For tabuSearch in functions array run k tests and save time, best path distance and PRD into results Dict.
+
+Repeat for each random generated problem.
+
+Save results to .json file.
+
+## Params
+
+- `functions::Array{Function}` : array of chosen heuristics (see algorithms.jl for available options)
+- `k` : number of performed tests for each TSPlib dataset
+- `step` : difference number between each TSP Size problem
+- `s_end` : high limit, if step surpass s_end it's stop
+- `random:Function` : function generating random problems
+- `tabu_params` : parameters used in tabuSearch
+"""
 function tabuRandomTest(
   functions::Array{Function}, 
   k::Int, start::Int, 
