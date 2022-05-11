@@ -3,6 +3,9 @@ include("../1/generate.jl")
 
 export timeCriterion, iterationsCriterion
 
+"""
+Print usage
+"""
 function usage()
    println("""
    Usage: julia main.jl
@@ -25,7 +28,10 @@ function usage()
    """)
 end
 
-
+"""
+Main function that with certain arguments given, starts tabu search.
+Args neeed specified in usage function
+"""
 function main(args::Array{String})
   startingAlgs = Dict("krand" => krandom, "2opt" => twoopt, "nn" => nearestNeighbour, "rnn" => repetitiveNearestNeighbour)
   moves = Dict("swap" => moveSwap, "insert" => moveInsert, "invert" => moveInvert)

@@ -1,12 +1,33 @@
 # move_funcs -> (function move(), function distance(), function j_start()) ? zeby mozna bylo latwo akcelerowac
 # a jak nie to zwroci (function move(), nodeWeightSum)
+"""
+Inverts path via path[x] and path[y]
 
+## Params:
+- `path::Vector{Int}`: Path that we make invert on
+- `x::Int`: First position in path
+- `y::Int`: Second position in path
+
+## Returns:
+- `path::Vector{Int}`: Inverted path
+
+"""
 function invert(path::Vector{Int}, x::Int, y::Int)::Vector{Int}
   inverted_path::Vector{Int} = copy(path)
   inverted_path[x:y] = inverted_path[y:-1:x]
   return inverted_path
 end
 
+"""
+Prepares move, function to calculate new path length, useless function
+
+## Returns:
+Tuple contatining:
+- `invert:Function`: move invert
+- `function`: function to calculate new path length
+- `function`: new value 
+
+"""
 function moveInvert()::Tuple{Function, Function, Function}
   return (
     invert,
@@ -31,12 +52,34 @@ function moveInvert()::Tuple{Function, Function, Function}
   )
 end
 
+"""
+Swaps path[x] with path[y]
+
+## Params:
+- `path::Vector{Int}`: Path that we make swap on
+- `x::Int`: First position in path
+- `y::Int`: Second position in path
+
+## Returns:
+- `path::Vector{Int}`: New path with swapped point 
+
+"""
 function swap(path::Vector{Int}, x::Int, y::Int)::Vector{Int}
   swapped_path::Vector{Int} = copy(path)
   swapped_path[x], swapped_path[y] = swapped_path[y], swapped_path[x]
   return swapped_path
 end
 
+"""
+Prepares move, function to calculate new path length, useless function
+
+## Returns:
+Tuple contatining:
+- `swap:Function`: move swap
+- `function`: function to calculate new path length
+- `function`: new value 
+
+"""
 function moveSwap()::Tuple{Function, Function, Function}
   return (
     swap,
@@ -81,6 +124,18 @@ function moveSwap()::Tuple{Function, Function, Function}
   )
 end
 
+"""
+Inserts path[x] after path[y]
+
+## Params:
+- `path::Vector{Int}`: Path that we make invert on
+- `x::Int`: First position in path
+- `y::Int`: Second position in path
+
+## Returns:
+- `path::Vector{Int}`: New path after insertion
+
+"""
 function insert(path::Vector{Int}, x::Int, y::Int)::Vector{Int}
   inserted_path::Vector{Int} = copy(path)
   inserted_el::Int = inserted_path[x] 
@@ -89,6 +144,16 @@ function insert(path::Vector{Int}, x::Int, y::Int)::Vector{Int}
   return inserted_path
 end
 
+"""
+Prepares move, function to calculate new path length, useless function
+
+## Returns:
+Tuple contatining:
+- `insert:Function`: move invert
+- `function`: function to calculate new path length
+- `function`: new value 
+
+"""
 function moveInsert()::Tuple{Function, Function, Function}
   return (
     insert,
