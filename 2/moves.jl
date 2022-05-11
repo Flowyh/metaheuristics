@@ -1,5 +1,3 @@
-# move_funcs -> (function move(), function distance(), function j_start()) ? zeby mozna bylo latwo akcelerowac
-# a jak nie to zwroci (function move(), nodeWeightSum)
 """
 Inverts path via path[x] and path[y]
 
