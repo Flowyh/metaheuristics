@@ -30,7 +30,7 @@ end
 
 """
 Main function that with certain arguments given, starts tabu search.
-Args neeed specified in usage function
+Args needed specified in usage function
 """
 function main(args::Array{String})
   startingAlgs = Dict("krand" => krandom, "2opt" => twoopt, "nn" => nearestNeighbour, "rnn" => repetitiveNearestNeighbour)

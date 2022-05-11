@@ -1,0 +1,395 @@
+<!DOCTYPE html><html><head>
+      <title>README</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/flowyh/.vscode-server/extensions/shd101wyy.markdown-preview-enhanced-0.6.2/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h3 class="mume-header" id="sprawozdanie-etap-1httpradoslawidzikowskistaffiiarpwrwrocplinstructionmeta2pdf">Sprawozdanie <a href="http://radoslaw.idzikowski.staff.iiar.pwr.wroc.pl/instruction/meta2.pdf">Etap 1</a></h3>
+
+<table>
+<thead>
+<tr>
+<th>Przedmiot</th>
+<th>Algorytmy metaheurystyczne</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prowadz&#x105;cy</td>
+<td>Dr in&#x17C;. Rados&#x142;aw Idzikowski</td>
+</tr>
+<tr>
+<td>Autorzy</td>
+<td>Maciej Bazela (261743) Hubert Gruda (261734)</td>
+</tr>
+<tr>
+<td>Grupa</td>
+<td>Czwartek 13:15-15:00</td>
+</tr>
+<tr>
+<td>Kod grupy</td>
+<td>K03-66p</td>
+</tr>
+<tr>
+<td>J&#x119;zyk</td>
+<td>Julia</td>
+</tr>
+</tbody>
+</table>
+<h3 class="mume-header" id="implementacja">Implementacja</h3>
+
+<p>Etap 2 polega&#x142; na implementacji przeszukiwania z zabronieniami (Tabu Search) dla <a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">problemu komiwoja&#x17C;era</a> oraz zbadaniu jego niekt&#xF3;rych w&#x142;asno&#x15B;ci (czas dzia&#x142;ania, PRD).</p>
+<p>Implementacja Tabu Searcha znajduje si&#x119; w: <a href="./tabuSearch.jl">./tabuSearch.jl</a>.</p>
+<p>Badania przeprowadzili&#x15B;my na bibliotece <a href="http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/">TSPLIB</a>, kt&#xF3;ra zawiera przyk&#x142;adowe dane dla symetrycznego problemu komiwoja&#x17C;era, oraz na losowo generowanych grafach.</p>
+<p>Funkcje generuj&#x105;ce grafy o symetrycznych (euklidesowych) i asymetrycznych (losowych) wagach znajduj&#x105; si&#x119; w pliku <a href="../1/generate.jl">generate.jl</a>.</p>
+<h3 class="mume-header" id="badania">Badania</h3>
+
+<p>Badania przeproawdzili&#x15B;my na <a href="./testing.jl#:~:text=hardcodedData">takich samych instancjach TSPLIB</a> jak w etapie 1 oraz na losowo generowanych danych (dla wag euklidesowych).</p>
+<p>Badania polega&#x142;y na uruchomieniu Tabu Searcha dla danych parametr&#xF3;w, zbadanie czasu dzia&#x142;ania dla zadanej liczby iteracji (nie testowali&#x15B;my kryterium stopu w postaci czasu dzia&#x142;ania), najlepszej warto&#x15B;ci funkcji celu oraz PRD dla danego problemu.</p>
+<p>Aby Tabu Search dzia&#x142;a&#x142; optymalnie, musieli&#x15B;my go najpierw &quot;nastroi&#x107;&quot; (dobra&#x107; odpowiednie parametry).</p>
+<p>W naszym przypadku strojenie polega&#x142;o na w&#x142;&#x105;czaniu heurystyki dla zadanych parametr&#xF3;w, por&#xF3;wnaniu warto&#x15B;ci PRD i wybranie najlepszych parametr&#xF3;w dla przysz&#x142;ych test&#xF3;w.</p>
+<p>Po kolei testowali&#x15B;my:</p>
+<ul>
+<li>rodzaj ruchu,</li>
+<li>wielko&#x15B;&#x107; listy tabu,</li>
+<li>wielko&#x15B;&#x107; pami&#x119;ci d&#x142;ugoterminowej,</li>
+<li>liczba iteracji, zanim uznajemy, &#x17C;e zosta&#x142;a wykryta stagnacja,</li>
+<li>maksymalne dopuszczalne odchylenie od najlepszego rozwi&#x105;zania u&#x17C;ywane w mechanizmie aspiracji,</li>
+<li>liczba w&#x105;tk&#xF3;w u&#x17C;ytych w czasie dzia&#x142;ania programu.</li>
+</ul>
+<p>Wszystkie badania uruchamiane s&#x105; z programu <a href="./main.jl">./main.jl</a> przy pomocy odpowiednio dobranych argument&#xF3;w w linii komend (wi&#x119;cej informacji znajduje si&#x119; w pliku).</p>
+<p>Dla u&#x142;atwienia, przygotowali&#x15B;my skrypty w bashu (<a href="./tests.sh">./tests.sh</a>, <a href="./2nd-tests.sh">./2nd-tests.sh</a>), kt&#xF3;re uruchamiaj&#x105; po kolei powy&#x17C;sze badania strojeniowe.</p>
+<p>Kiedy wyznaczyli&#x15B;my optymalne parametry dla naszej heurystyki por&#xF3;wnali&#x15B;my j&#x105; z poprzednio zaimplementowanymi heurystykami, kt&#xF3;re badali&#x15B;my podczas etapu 1 (2-opt, nearest neighbour, repetitive nearest neighbour, k-random).</p>
+<h3 class="mume-header" id="wyniki">Wyniki</h3>
+
+<p>Wyniki test&#xF3;w algorithmsTest oraz randomGraphsTest zapisywali&#x15B;my do formatu .json w folderze <a href="./results/jsons/">./results/jsons</a>.</p>
+<p>Pliki wynikowe zawieraj&#x105; warto&#x15B;ci podanych wy&#x17C;ej statystyk (czas, prd, najlepsza warto&#x15B;&#x107; funkcji celu) rozdzielone wed&#x142;ug ilo&#x15B;ci w&#x119;z&#x142;&#xF3;w dla zadanego problemu.</p>
+<h3 class="mume-header" id="wykresy">Wykresy</h3>
+
+<p>Dla wygenerowanych wynik&#xF3;w napisali&#x15B;my program, kt&#xF3;ry sczytuje pliki .json i dla podanych algorytm&#xF3;w tworzy ich wykresy.</p>
+<p>Kod &#x17A;r&#xF3;d&#x142;owy mo&#x17C;na znale&#x17A;&#x107; w pliku <a href="./tests/plotting.jl">./tests/plotting.jl</a>.</p>
+<p>Dla wynik&#xF3;w z folderu <a href="./results/jsons/">./results/jsons</a> wygenerowali&#x15B;my wykresy dla ka&#x17C;dego algorytmu. Znajduj&#x105; si&#x119; one w folderze <a href="./results/plots/">./results/plots</a>.</p>
+<h3 class="mume-header" id="wnioski">Wnioski</h3>
+
+<h4 class="mume-header" id="strojenie">Strojenie</h4>
+
+<h5 class="mume-header" id="najlepszy-rodzaj-ruchu-prd">Najlepszy rodzaj ruchu (PRD):</h5>
+
+<p><img src="./results/plots/set-1/tabuSearch-mvInsert_tabuSearch-mvInvert_tabuSearch-mvSwap/tabuSearch-mvInsert_tabuSearch-mvInvert_tabuSearch-mvSwap-k1-prd-avgs.png" alt="prd for different moves"></p>
+<p>Jak widzimy, ruch typu <strong>invert</strong> druzgoc&#x105;co polepsza znajdywane rozwi&#x105;zania.</p>
+<p>Rozwi&#x105;zania znajdywane przy u&#x17C;yciu ruchu <strong>invert</strong> s&#x105; bliskie rozwi&#x105;zaniom optymalnym.</p>
+<h5 class="mume-header" id="najlepsza-wielko%C5%9B%C4%87-listy-tabu-prd">Najlepsza wielko&#x15B;&#x107; listy tabu (PRD):</h5>
+
+<p><img src="./results/plots/set-1/tabuSearch-tsdiv2_tabuSearch-ts7_tabuSearch-tsdiv3/tabuSearch-tsdiv2_tabuSearch-ts7_tabuSearch-tsdiv3-k1-prd-avgs.png" alt="prd for different tabu sizes"></p>
+<p>W przypadku TSPLIB wielko&#x15B;&#x107; listy tabu powinna by&#x107; liniowo uzale&#x17C;niona od wielko&#x15B;ci zadanego problemu. Dlatego dla reszty bada&#x144; przyj&#x119;li&#x15B;my, &#x17C;e wielko&#x15B;&#x107; listy tabu r&#xF3;wna si&#x119; <strong>po&#x142;owie liczby w&#x119;z&#x142;&#xF3;w</strong> w danym problemie.</p>
+<h5 class="mume-header" id="najlepsza-wielko%C5%9B%C4%87-pami%C4%99ci-d%C5%82ugoterminowej-prd">Najlepsza wielko&#x15B;&#x107; pami&#x119;ci d&#x142;ugoterminowej (PRD):</h5>
+
+<p><img src="./results/plots/set-1/tabuSearch-bs15_tabuSearch-bsdiv2_tabuSearch-bsdiv3/tabuSearch-bs15_tabuSearch-bsdiv2_tabuSearch-bsdiv3-k1-prd-avgs.png" alt="prd for different backtrack sizes"></p>
+<p>Tak samo jak w przypadku wielko&#x15B;ci listy tabu, wielko&#x15B;&#x107; pami&#x119;ci d&#x142;ugoterminowej powinna by&#x107; uzale&#x17C;niona liniowo od ilo&#x15B;ci w&#x119;z&#x142;&#xF3;w danego problemu. Tutaj tak&#x17C;e przyj&#x119;li&#x15B;my, &#x17C;e backtrack_size = <strong>liczba_w&#x119;z&#x142;&#xF3;w / 2</strong>.</p>
+<h5 class="mume-header" id="liczba-iteracji-zanim-uznajemy-stagnacj%C4%99-prd">Liczba iteracji zanim uznajemy stagnacj&#x119; (PRD):</h5>
+
+<p><img src="./results/plots/set-1/tabuSearch-sl200_tabuSearch-sl100_tabuSearch-sl50/tabuSearch-sl200_tabuSearch-sl100_tabuSearch-sl50-k1-prd-avgs.png" alt="prd for different stagnation%"></p>
+<p>Limit liczby iteracji, kt&#xF3;re nie poprawiaj&#x105; nam dotychczasowego rozwi&#x105;zania ustawiali&#x15B;my w zale&#x17C;no&#x15B;ci od liczby badanych iteracji. Dla ka&#x17C;dego wybranego problemu z TSPLIB wybierali&#x15B;my kolejno jako limit stagnacji w 5%, 10% albo 20% liczby wszystkich iteracji (np. dla 1000 iteracji, mieliby&#x15B;my kolejno: 50 iteracji, 100 iteracji i 200 iteracji zanim uznamy, &#x17C;e wykryli&#x15B;my stagnacj&#x119;).</p>
+<p>Dla <strong>10%</strong> wszystkich iteracji osiagali&#x15B;my najlepsze PRD.</p>
+<h5 class="mume-header" id="odchylenie-od-najlepszego-rozwi%C4%85zania-u%C5%BCyte-w-mechanizmie-aspiracji-prd">Odchylenie od najlepszego rozwi&#x105;zania u&#x17C;yte w mechanizmie aspiracji (PRD):</h5>
+
+<p><img src="./results/plots/set-1/tabuSearch-at0.05_tabuSearch-at0.01_tabuSearch-at0.03/tabuSearch-at0.05_tabuSearch-at0.01_tabuSearch-at0.03-k1-prd-avgs.png" alt="prd for different aspiration threshold"></p>
+<p>Nasze kryterium aspiracji polega&#x142;o na sprawdzaniu, czy wybrany zabroniony ruch nie polepsza nam dotychczasowego najlepszego rozwi&#x105;zania z jakim&#x15B; marginesem b&#x142;&#x119;du.</p>
+<p>Margines ten okre&#x15B;lali&#x15B;my jako <strong>aspiration_threshold</strong>, kt&#xF3;ry jest floatem od 0.0 do 1.0.</p>
+<p>Np. dla aspiration_threshold = 0.05 dopuszczali&#x15B;my rozwi&#x105;znia, kt&#xF3;re s&#x105; lepsze od <strong>(1-0.05) * the_bestest_distance</strong>, czyli te, kt&#xF3;re s&#x105; maksymalnie o <strong>5%</strong> gorsze od dotychczasowego.</p>
+<p>Przyj&#x119;li&#x15B;my 3 r&#xF3;&#x17C;ne warianty odchylenia: <strong>1%</strong>, <strong>3%</strong>, <strong>5%</strong>.</p>
+<p>Dla <strong>1%</strong> mechanizm aspiracji zachowywa&#x142; si&#x119; najlepiej.</p>
+<h5 class="mume-header" id="liczba-w%C4%85tk%C3%B3w-a-czas-dzia%C5%82ania-dla-n-liczby-iteracji">Liczba w&#x105;tk&#xF3;w, a czas dzia&#x142;ania dla n liczby iteracji:</h5>
+
+<p><img src="./results/plots/set-1/tabuSearch-t2_tabuSearch-t10_tabuSearch-t4_tabuSearch-t8_tabuSearch-t1/tabuSearch-t2_tabuSearch-t10_tabuSearch-t4_tabuSearch-t8_tabuSearch-t1-k1-time-avgs.png" alt="time for number of threads"></p>
+<p>Zbadali&#x15B;my od jakiego momentu op&#x142;aca si&#x119; zr&#xF3;wnolegla&#x107; badanie przeszukiwanie s&#x105;siedstwa w tabu search.</p>
+<p>Dla ma&#x142;ych instancji nie ma to sensu, poniewa&#x17C; nasz kod jest na tyle zoptymalizowany, &#x17C;e w&#x142;&#x105;czenie i usypianie w&#x105;tk&#xF3;w wyd&#x142;u&#x17C;a czas, zamiast go skraca&#x107;.</p>
+<p>Na wykresie mo&#x17C;emy zobaczy&#x107;, &#x17C;e dla problem&#xF3;w maj&#x105;cych oko&#x142;o <strong>300</strong> w&#x119;z&#x142;&#xF3;w zaczynamy odczuwa&#x107; realn&#x105; r&#xF3;&#x17C;nic&#x119; w czasie dzia&#x142;ania naszej heurystyki.</p>
+<h4 class="mume-header" id="por%C3%B3wnanie-z-innymi-heurystykami">Por&#xF3;wnanie z innymi heurystykami</h4>
+
+<h5 class="mume-header" id="wybrane-instancje-z-tsplib">Wybrane instancje z TSPLIB:</h5>
+
+<p><img src="./results/plots/set-1/krandom_twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour/krandom_twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour-k10-best-path-avgs.png" alt="tabu vs all"></p>
+<p><img src="./results/plots/set-1/nokrand_twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour-k10-best-path-avgs.png" alt="tabu vs all no krand"></p>
+<p><img src="./results/plots/set-1/tabu_twoopt_tabuSearch/twoopt_tabuSearch-k10-prd-avgs.png" alt="tabu vs 2opt prd"></p>
+<p>Tabu serach jest jedn&#x105; z najlepszych heurystyk dla problem&#xF3;w z TSPLIB, chocia&#x17C;, jak mo&#x17C;emy zauwa&#x17C;y&#x107;, nie zawsze poprawia on rozwi&#x105;zania wzgl&#x119;dem 2-opt.</p>
+<p>Jako rozwi&#x105;zanie startowe przyjmowali&#x15B;my zawsze &#x15B;cie&#x17C;k&#x119; z 2-opt i mo&#x17C;liwe, &#x17C;e liczba iteracji by&#x142;a zbyt ma&#x142;a, zanim dotarli&#x15B;my do rzeczywi&#x15B;cie du&#x17C;o lepszych rozwi&#x105;za&#x144;.</p>
+<p>Wyniki prezentuj&#x105; si&#x119; du&#x17C;o lepiej dla losowych instancji problemu TSP.</p>
+<h5 class="mume-header" id="losowe-instancje-euklidesowe-wagi">Losowe instancje, euklidesowe wagi:</h5>
+
+<p><img src="./results/plots/set-2/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour-k1-prd-avgs.png" alt="prd tabu vs rest"></p>
+<p><img src="./results/plots/set-2/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour-k1-time-avgs.png" alt="time tabu vs rest"></p>
+<p><img src="./results/plots/set-2/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour/twoopt_repetitiveNearestNeighbour_tabuSearch_nearestNeighbour-k1-best-path-avgs.png" alt="time tabu vs rest"></p>
+<p>Tabu search znajduje najlepsze rozwi&#x105;zania dla losowych instancji, przebijaj&#x105;c wszystkie poprzednie heurystyki.</p>
+<p>Niestety dziej&#x119; si&#x119; to wszystko kosztem czasu dzia&#x142;ania. Tabu Search jest najwolniejszy z wszystkich heurystyk.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
