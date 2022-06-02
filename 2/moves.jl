@@ -43,7 +43,7 @@ function moveInvert()::Tuple{Function, Function, Function}
       result += weights[path[prev_x], path[x]]
       result += weights[path[y], path[next_y]]
       
-      # @assert result == nodeWeightSum(path, weights)
+      @assert result == nodeWeightSum(path, weights)
       return result
     end,
     function(i::Int) return i + 1 end
@@ -115,7 +115,7 @@ function moveSwap()::Tuple{Function, Function, Function}
         result += weights[path[x], path[next_x]]
       end
 
-      # @assert result == nodeWeightSum(path, weights)
+      @assert result == nodeWeightSum(path, weights)
       return result
     end,
     function(i::Int) return i + 1 end
@@ -174,7 +174,7 @@ function moveInsert()::Tuple{Function, Function, Function}
       result += weights[path[prev_y], path[y]]
       result += weights[path[y], path[next_y]]
 
-      # @assert result == nodeWeightSum(path, weights)
+      @assert result == nodeWeightSum(path, weights)
       return result
     end,
     function(i::Int) return i + 1 end

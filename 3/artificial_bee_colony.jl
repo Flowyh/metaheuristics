@@ -10,7 +10,7 @@ module ArtificialBeeColony
   export Bee, random_swarm, invert_swarm, produce_honey
   export openTSPFile, structToDict
   export timeCriterion, iterationsCriterion
-  export nodeWeightSum
+  export nodeWeightSum, krandom, twoopt, nearestNeighbour, repetitiveNearestNeighbour
 
   function beerror()
     throw("https://www.tiktok.com/@steves_monologue/video/7098949151240736046?is_copy_url=1&is_from_webapp=v1")
