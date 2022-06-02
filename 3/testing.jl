@@ -97,7 +97,7 @@ function beeTSPTest(functions::Array{Function}, k::Int, bees_params::Array{Any})
 
   (bees_count, stopCriterion, stopCritAmount, visits_limit) = bees_params
 
-  stop = stopFun(stopCritAmount)
+  stop = stopCriterion(stopCritAmount)
   
   for key in keys(results)
     results[key] = Dict("time" => Dict(), "prd" => Dict(), "best" => Dict())

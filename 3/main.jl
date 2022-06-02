@@ -54,8 +54,8 @@ function main(args::Array{String})
       other_funcs = Array{Function}([produce_honey])
       funcs = split(args[6], ",")
       for func in funcs
-        if (haskey(startingAlgs, func))
-          push!(other_funcs, startingAlgs[func])
+        if (haskey(otherAlgs, func))
+          push!(other_funcs, otherAlgs[func])
         end
       end
     end
