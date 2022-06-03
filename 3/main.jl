@@ -17,12 +17,13 @@ function usage()
    3: stop criterion [time, iteration]
    4: stop criterion limit [seconds, number of iterations]
    5: flower visits limit [int]
-   6: other funcs
-   7: repeats (if mode == hardcoded or random) [uint]
-   8: start number of nodes (if mode == random) [uint]
-   9: step number of nodes (if mode == random) [uint]
-   10: end number of nodes (if mode == random) [uint]
-   11: random type [euclidean, assymetric]
+   6: swarm generator function ["swap", "insert", "invert", "rand", "x,y,z" where x = swap, y = invert and z = insert number of percentages (sum up to 100)]
+   7: other funcs
+   8: repeats (if mode == hardcoded or random) [uint]
+   9: start number of nodes (if mode == random) [uint]
+   10: step number of nodes (if mode == random) [uint]
+   11: end number of nodes (if mode == random) [uint]
+   12: random type [euclidean, assymetric]
    """)
 end
 
@@ -33,8 +34,9 @@ Args needed specified in usage function
 function main(args::Array{String})
   stopCriteria = Dict("time" => timeCriterion, "iteration" => iterationsCriterion)
   otherAlgs = Dict("krand" => krandom, "2opt" => twoopt, "nn" => nearestNeighbour, "rnn" => repetitiveNearestNeighbour, "tabu" => tabuSearch)
+  swarms = Dict("swap" => swap_swarm, "invert" => invert_swarm, "insert" => insert_swarm, "rand" => random_swarm)
 
-  if (length(ARGS) < 5)
+  if (length(ARGS) < 6)
     println("Please provide at least 5 arguments.")
     usage()
     exit(1)
@@ -49,10 +51,22 @@ function main(args::Array{String})
     stopCriterion = stopCriteria[args[3]]
     stopCritAmount = parse(Int, args[4])
     visits_limit = parse(Int, args[5])
+    splitPercent = 0
+    invertPercent = 0
+    insertPercent = 0
+    if (occursin(",", args[6]))
+      numbers = split(args[6], ",")
+      splitPercent = parse(Int, numbers[1])
+      invertPercent = parse(Int, numbers[2])
+      insertPercent = parse(Int, numbers[3])
+      swarm_generator = prepared_swarm
+    else
+      swarm_generator = swarms[args[6]]
+    end
     other_funcs = Array{Function}([produce_honey, collect(values(otherAlgs))...])
-    if (length(args) >= 6 && args[6] != "all")
+    if (length(args) >= 7 && args[7] != "all")
       other_funcs = Array{Function}([produce_honey])
-      funcs = split(args[6], ",")
+      funcs = split(args[7], ",")
       for func in funcs
         if (haskey(otherAlgs, func))
           push!(other_funcs, otherAlgs[func])
@@ -61,31 +75,35 @@ function main(args::Array{String})
     end
 
     if (mode == "hardcoded")
-      if (length(args) < 7)
-        println("Please provide at least 11 arguments.")
+      if (length(args) < 8)
+        println("Please provide at least 8 arguments.")
         usage()
         exit(1)
       end
       beeTSPTest(
         other_funcs,
-        parse(Int, args[7]),
+        parse(Int, args[8]),
         [
           bees_count,
           stopCriterion,
           stopCritAmount,
-          visits_limit
+          visits_limit,
+          swarm_generator,
+          splitPercent,
+          invertPercent,
+          insertPercent
         ]
       )
 
     elseif (mode == "random")
-      if (length(args) < 11)
-        println("Please provide at least 15 arguments.")
+      if (length(args) < 12)
+        println("Please provide at least 12 arguments.")
         usage()
         exit(1)
       end
-      if (args[11] == "euclidean")
+      if (args[12] == "euclidean")
         random = generateEuclidean
-      elseif (args[11] == "asymmetric")
+      elseif (args[12] == "asymmetric")
         random = generateAsymmetric
       else 
         println("Invalid random mode provided")
@@ -94,16 +112,20 @@ function main(args::Array{String})
       end
       beeRandomTest(
         other_funcs,
-        parse(Int, args[7]),
         parse(Int, args[8]),
         parse(Int, args[9]),
         parse(Int, args[10]),
+        parse(Int, args[11]),
         random,
         [
           bees_count,
           stopCriterion,
           stopCritAmount,
-          visits_limit
+          visits_limit,
+          swarm_generator,
+          splitPercent,
+          invertPercent,
+          insertPercent
         ]
       )
 
@@ -113,7 +135,7 @@ function main(args::Array{String})
       time = @elapsed distance = produce_honey(
         dict_tsp[:weights],
         dict_tsp[:dimension],
-        random_swarm(bees_count),
+        swarm_generator(bees_count, splitPercent, invertPercent, insertPercent),
         nodeWeightSum,
         visits_limit,
         stopCriterion(stopCritAmount)

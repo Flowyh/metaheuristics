@@ -7,10 +7,11 @@ module ArtificialBeeColony
   include("./swarms.jl")
 
   export beeror
-  export Bee, random_swarm, invert_swarm, produce_honey
+  export Bee, random_swarm, invert_swarm, insert_swarm, swap_swarm, prepared_swarm, produce_honey
   export openTSPFile, structToDict
   export timeCriterion, iterationsCriterion
   export nodeWeightSum, krandom, twoopt, nearestNeighbour, repetitiveNearestNeighbour
+  export moveInsert, moveInvert, moveSwap
 
   function beerror()
     throw("https://www.tiktok.com/@steves_monologue/video/7098949151240736046?is_copy_url=1&is_from_webapp=v1")
