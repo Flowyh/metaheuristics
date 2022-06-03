@@ -1,0 +1,24 @@
+Urgent:
+[ ] Wątki na każdą fazę <- Maciek
+[ ] Rozdzielenie faz na funkcje <- Maciek
+[ ] Badania:
+    [ ] Proporcje ruchów przypisanych do pszczółek (np. 30% swap, 10% insert, 60% invert):
+        [ ] wagedSwarm (procentowo i jakie ruchy <- Hubert
+        [ ] fix randomSwarm <- Razem
+        [ ] singleSwarm (przekazana funkcja move i robi z tego swarma <- Hubert
+    [ ] Ilość pszczółek <- Hubert
+    [ ] Limit kwiatka w zależności od liczby pszczółek/wielkości problemu (?) <- Hubert
+
+Mniej urgent:
+[ ] Krzyżowanie:
+    [ ] Implementacja różnych metod
+    [ ] Zbadanie gdzie najlepiej dać krzyżowanie:
+        [ ] W usuwaniu słabych kwiatków (?)
+        [ ] Po ostatniej fazie? (scouts)
+    [ ] Jak krzyżować:
+        [ ] Ustalona metoda
+        [ ] Losowana metoda
+        [ ] Ważone? metody
+[ ] Inne metody selekcji:
+    [ ] Turniej (?)
+    [x] Ruletka
