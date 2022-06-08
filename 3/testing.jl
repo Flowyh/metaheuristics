@@ -165,9 +165,9 @@ function beeTSPTest(functions::Array{Function}, k::Int, bees_params::Array{Any})
       file_str = "./jsons/$(func)-k$k-mvInsert-st$limit-ts$ts-at$at-bs$bs-sl$sl-t$(Threads.nthreads())-$now.json"
     elseif (func == produce_honey)
       if (100 == swapCount + invertCount + insertCount)
-        file_str = "./jsons/$(func)-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(swapCount)_$(invertCount)_$(insertCount)-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+        file_str = "./jsons/artificialBeeColony-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(swapCount)_$(invertCount)_$(insertCount)-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
       else
-        file_str = "./jsons/$(func)-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+        file_str = "./jsons/artificialBeeColony-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
       end
     end
     open(file_str, "w") do io
@@ -178,7 +178,8 @@ end
 
 function beeRandomTest(
   functions::Array{Function}, 
-  k::Int, start::Int, 
+  k::Int, 
+  start::Int, 
   step::Int, 
   s_end::Int, 
   random::Function, 
@@ -193,7 +194,7 @@ function beeRandomTest(
   (bees_count, stopCriterion, stopCritAmount, visits_limit, swarm_generator, swapCount, invertCount, insertCount, selection, selection_param) = bees_params
   # tabu Search params 
   limit = stopCritAmount
-  ts = "n2"
+  ts = "div2"
   bs = 1000
   at = 0.05
   sl = 1000
@@ -261,9 +262,9 @@ function beeRandomTest(
       file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end--mvInsert-st$limit-ts$ts-at$at-bs$bs-sl$sl-t$(Threads.nthreads())-$now.json"
     elseif (func == produce_honey)
       if (100 == swapCount + invertCount + insertCount)
-        file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$swapCount,$invertCount,$insertCount-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+        file_str = "./jsons/artificialBeeColony-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$swapCount,$invertCount,$insertCount-sm$(String(nameof(selection)))-sp$(selection_param)-t$(Threads.nthreads())-$now.json"
       else
-        file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+        file_str = "./jsons/artificialBeeColony-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-sm$(String(nameof(selection)))-sp$(selection_param)-t$(Threads.nthreads())-$now.json"
       end
     end
     open(file_str, "w") do io

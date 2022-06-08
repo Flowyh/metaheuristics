@@ -38,6 +38,6 @@ function timeCriterion(timeLimitSeconds::Int)
   predicate = function(x::UInt64) return (time_ns() - x) * 1e-9 > timeLimitSeconds end
   increment = function(x::UInt64) return x end
   return function()
-    return (start, predicate, increment)
+    return (time_ns(), predicate, increment)
   end
 end

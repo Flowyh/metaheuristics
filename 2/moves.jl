@@ -180,3 +180,35 @@ function moveInsert()::Tuple{Function, Function, Function}
     function(i::Int) return i + 1 end
   )
 end
+
+"""
+    range_split(nodes)
+
+A helper function splitting an integer range ranging from 1 to nodes evenly, based on current number of nodes assigned to Julia's REPL.
+It is used to properly assign checked neighbourhood range for each thread, so we can parallelize everything properly.
+
+# Params:
+
+- `nodes::Int` - number of nodes for given TSP dataset.
+
+# Returns:
+
+- `Vector{Tuple{Int, Int}}` - a vector of evenly split integer range ranging from 1 to nodes based on current number of threads.
+
+For example, if we want to split an integer range from 1 to 10 and we've assigned 2 threads to run this program, this function would return two even ranges for each thread: (1,5) and (6,10)
+"""
+function range_split(nodes::Int)::Vector{Tuple{Int, Int}}
+  threads::Int = Threads.nthreads()
+  splits::Int = cld(nodes, threads)
+  if (splits == 0) return Vector{Tuple{Int, Int}}([(1,nodes)]) end
+  return Vector{Tuple{Int, Int}}(
+    [
+      if (i+splits < nodes) 
+        Tuple{Int,Int}((i+1,i+splits)) 
+      else 
+        Tuple{Int,Int}((i+1, nodes)) 
+      end 
+      for i in 0:splits:nodes-1
+    ]
+  )
+end
