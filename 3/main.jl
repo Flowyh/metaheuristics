@@ -18,12 +18,14 @@ function usage()
    4: stop criterion limit [seconds, number of iterations]
    5: flower visits limit [int]
    6: swarm generator function ["swap", "insert", "invert", "rand", "x,y,z" where x = swap, y = invert and z = insert number of percentages (sum up to 100)]
-   7: other funcs
-   8: repeats (if mode == hardcoded or random) [uint]
-   9: start number of nodes (if mode == random) [uint]
-   10: step number of nodes (if mode == random) [uint]
-   11: end number of nodes (if mode == random) [uint]
-   12: random type [euclidean, assymetric]
+   7: selection method ["roulette", "tournament"]
+   8: selection parameter [float64] [0, 1)
+   9: other funcs
+   10: repeats (if mode == hardcoded or random) [uint]
+   11: start number of nodes (if mode == random) [uint]
+   12: step number of nodes (if mode == random) [uint]
+   13: end number of nodes (if mode == random) [uint]
+   14: random type [euclidean, assymetric]
    """)
 end
 
@@ -36,8 +38,8 @@ function main(args::Array{String})
   otherAlgs = Dict("krand" => krandom, "2opt" => twoopt, "nn" => nearestNeighbour, "rnn" => repetitiveNearestNeighbour, "tabu" => tabuSearch)
   swarms = Dict("swap" => swap_swarm, "invert" => invert_swarm, "insert" => insert_swarm, "rand" => random_swarm)
 
-  if (length(ARGS) < 6)
-    println("Please provide at least 5 arguments.")
+  if (length(ARGS) < 8)
+    println("Please provide at least 8 arguments.")
     usage()
     exit(1)
   end
@@ -63,10 +65,16 @@ function main(args::Array{String})
     else
       swarm_generator = swarms[args[6]]
     end
+    if (args[7] == "roulette")
+      selection_method = stochastic_rws
+    else
+      selection_method = tournament
+    end
+    selection_param = parse(Float64, args[8])
     other_funcs = Array{Function}([produce_honey, collect(values(otherAlgs))...])
-    if (length(args) >= 7 && args[7] != "all")
+    if (length(args) >= 9 && args[9] != "all")
       other_funcs = Array{Function}([produce_honey])
-      funcs = split(args[7], ",")
+      funcs = split(args[9], ",")
       for func in funcs
         if (haskey(otherAlgs, func))
           push!(other_funcs, otherAlgs[func])
@@ -75,14 +83,14 @@ function main(args::Array{String})
     end
 
     if (mode == "hardcoded")
-      if (length(args) < 8)
+      if (length(args) < 10)
         println("Please provide at least 8 arguments.")
         usage()
         exit(1)
       end
       beeTSPTest(
         other_funcs,
-        parse(Int, args[8]),
+        parse(Int, args[10]),
         [
           bees_count,
           stopCriterion,
@@ -91,19 +99,21 @@ function main(args::Array{String})
           swarm_generator,
           splitPercent,
           invertPercent,
-          insertPercent
+          insertPercent,
+          selection_method,
+          selection_param
         ]
       )
 
     elseif (mode == "random")
-      if (length(args) < 12)
+      if (length(args) < 14)
         println("Please provide at least 12 arguments.")
         usage()
         exit(1)
       end
-      if (args[12] == "euclidean")
+      if (args[14] == "euclidean")
         random = generateEuclidean
-      elseif (args[12] == "asymmetric")
+      elseif (args[14] == "asymmetric")
         random = generateAsymmetric
       else 
         println("Invalid random mode provided")
@@ -112,10 +122,10 @@ function main(args::Array{String})
       end
       beeRandomTest(
         other_funcs,
-        parse(Int, args[8]),
-        parse(Int, args[9]),
         parse(Int, args[10]),
         parse(Int, args[11]),
+        parse(Int, args[12]),
+        parse(Int, args[13]),
         random,
         [
           bees_count,
@@ -125,7 +135,9 @@ function main(args::Array{String})
           swarm_generator,
           splitPercent,
           invertPercent,
-          insertPercent
+          insertPercent,
+          selection_method,
+          selection_param
         ]
       )
 
@@ -138,7 +150,9 @@ function main(args::Array{String})
         swarm_generator(bees_count, splitPercent, invertPercent, insertPercent),
         nodeWeightSum,
         visits_limit,
-        stopCriterion(stopCritAmount)
+        stopCriterion(stopCritAmount),
+        selection_method,
+        selection_param
       )[2]
 
       println("Bees nectar: $(distance)")

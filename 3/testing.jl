@@ -63,15 +63,17 @@ function testTabuSearch(path, nodes, weights, mv, stop, ts, at, bs, sl)
     return ([], best_dist, (test_end - test_start) * 1e-6)
 end
 
-function testProduceHoney(meadow, flower_size, hive, nectar_estimator, flower_visits_limit, stopCriterion)
+function testProduceHoney(meadow, flower_size, hive, nectar_estimator, flower_visits_limit, stopCriterion, selection, selection_param)
     test_start = time_ns()
     (_, bestDist::Float64) = produce_honey(
-    meadow,
-    flower_size,
-    hive,
-    nectar_estimator,
-    flower_visits_limit,
-    stopCriterion
+      meadow,
+      flower_size,
+      hive,
+      nectar_estimator,
+      flower_visits_limit,
+      stopCriterion,
+      selection,
+      selection_param
     )
     test_end = time_ns()
     return ([], bestDist, (test_end - test_start) * 1e-6)
@@ -95,7 +97,7 @@ function beeTSPTest(functions::Array{Function}, k::Int, bees_params::Array{Any})
     results[func] = Dict()
   end
 
-  (bees_count, stopCriterion, stopCritAmount, visits_limit, swarm_generator, swapCount, invertCount, insertCount) = bees_params
+  (bees_count, stopCriterion, stopCritAmount, visits_limit, swarm_generator, swapCount, invertCount, insertCount, selection, selection_param) = bees_params
   # tabu Search params 
   limit = stopCritAmount
   ts = "n2"
@@ -130,7 +132,7 @@ function beeTSPTest(functions::Array{Function}, k::Int, bees_params::Array{Any})
         (_, best_dist, time) = testTabuSearch(path, tsp_data[:dimension], tsp_data[:weights], moveInsert, stop, current_ts, at, current_bs, sl)
         push!(results[func]["time"][n], time)
       elseif (func == produce_honey)
-        (_, best_dist, time) = testProduceHoney(tsp_data[:weights], tsp_data[:dimension], swarm_generator(bees_count, swapCount, invertCount, insertCount), nodeWeightSum, visits_limit, stop)
+        (_, best_dist, time) = testProduceHoney(tsp_data[:weights], tsp_data[:dimension], swarm_generator(bees_count, swapCount, invertCount, insertCount), nodeWeightSum, visits_limit, stop, selection, selection_param)
         push!(results[func]["time"][n], time)
       else
         best_path = krandom(tsp_data, 1)
@@ -162,11 +164,11 @@ function beeTSPTest(functions::Array{Function}, k::Int, bees_params::Array{Any})
     if (func == tabuSearch)
       file_str = "./jsons/$(func)-k$k-mvInsert-st$limit-ts$ts-at$at-bs$bs-sl$sl-t$(Threads.nthreads())-$now.json"
     elseif (func == produce_honey)
-        if (100 == swapCount + invertCount + insertCount)
-            ile_str = "./jsons/$(func)-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$swapCount,$invertCount,$insertCount-$now.json"
-        else
-            file_str = "./jsons/$(func)-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-$now.json"
-        end
+      if (100 == swapCount + invertCount + insertCount)
+        file_str = "./jsons/$(func)-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(swapCount)_$(invertCount)_$(insertCount)-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+      else
+        file_str = "./jsons/$(func)-k$k-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+      end
     end
     open(file_str, "w") do io
       JSON.print(io, results[func])
@@ -188,7 +190,7 @@ function beeRandomTest(
     results[func] = Dict()
   end
 
-  (bees_count, stopCriterion, stopCritAmount, visits_limit, swarm_generator, swapCount, invertCount, insertCount) = bees_params
+  (bees_count, stopCriterion, stopCritAmount, visits_limit, swarm_generator, swapCount, invertCount, insertCount, selection, selection_param) = bees_params
   # tabu Search params 
   limit = stopCritAmount
   ts = "n2"
@@ -222,12 +224,12 @@ function beeRandomTest(
         (_, best_dist, time) = testTabuSearch(path, tsp_data[:dimension], tsp_data[:weights], moveInsert, stop, current_ts, at, current_bs, sl)
         push!(results[func]["time"][n], time)
       elseif (func == produce_honey)
-        (_, best_dist, time) = testProduceHoney(tsp_data[:weights], tsp_data[:dimension], swarm_generator(bees_count,swapCount, invertCount, insertCount), nodeWeightSum, visits_limit, stop)
+        (_, best_dist, time) = testProduceHoney(tsp_data[:weights], tsp_data[:dimension], swarm_generator(bees_count,swapCount, invertCount, insertCount), nodeWeightSum, visits_limit, stop, selection, selection_param)
         push!(results[func]["time"][n], time)
       else
         best_path = krandom(tsp_data, 1)
         best_dist = nodeWeightSum(best_path, tsp_data[:weights])
-        for i in 1:k
+        for _ in 1:k
           test_start = time_ns()
           if (func == twoopt) path = func(tsp_data, best_path)
           elseif (func == krandom) path = func(tsp_data, k)
@@ -258,11 +260,11 @@ function beeRandomTest(
     if (func == tabuSearch)
       file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end--mvInsert-st$limit-ts$ts-at$at-bs$bs-sl$sl-t$(Threads.nthreads())-$now.json"
     elseif (func == produce_honey)
-        if (100 == swapCount + invertCount + insertCount)
-            ile_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$swapCount,$invertCount,$insertCount-$now.json"
-        else
-            file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-$now.json"
-        end
+      if (100 == swapCount + invertCount + insertCount)
+        file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$swapCount,$invertCount,$insertCount-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+      else
+        file_str = "./jsons/$(func)-r$(String(nameof(random))[9:end])-k$k-b$start-s$step-e$s_end-bc$bees_count-sc$(String(nameof(stopCriterion)))-sl-$stopCritAmount-vl$visits_limit-sg$(String(nameof(swarm_generator)))-sm$(String(nameof(selection)))-sp$(selection_param)-$now.json"
+      end
     end
     open(file_str, "w") do io
       JSON.print(io, results[func])

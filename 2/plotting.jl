@@ -10,6 +10,7 @@ const alg_names = Dict(
   "repetitiveNearestNeighbour" => "rnn",
   "krandom" => "krand",
   "tabuSearch" => "tabu",
+  "artificialBeeColony" => "abc"
 )
 
 const modes = Dict(

@@ -1,10 +1,13 @@
 module ArtificialBeeColony
 
+  using Random, StatsBase
+
   include("../1/algorithms.jl")
   include("../2/stopCriteria.jl")
   include("../2/moves.jl")
   include("../2/tsplib.jl")
   include("./swarms.jl")
+  include("./selection.jl")
 
   export beeror
   export Bee, random_swarm, invert_swarm, insert_swarm, swap_swarm, prepared_swarm, produce_honey
@@ -12,6 +15,7 @@ module ArtificialBeeColony
   export timeCriterion, iterationsCriterion
   export nodeWeightSum, krandom, twoopt, nearestNeighbour, repetitiveNearestNeighbour
   export moveInsert, moveInvert, moveSwap
+  export stochastic_rws, tournament
 
   function beerror()
     throw("https://www.tiktok.com/@steves_monologue/video/7098949151240736046?is_copy_url=1&is_from_webapp=v1")
@@ -30,26 +34,15 @@ module ArtificialBeeColony
     wings::Function #💸 Accelerated distance
   end
 
-  using Random, StatsBase
-
-  # Roulette wheel selection using stochastic acceptance (http://www.sciencedirect.com/science/article/pii/S0378437111009010)
-  function stochastic_rws(weights::Vector{Float64})
-    min = minimum(weights)
-    while true
-      i = rand(1:length(weights))
-      if (rand() < min / weights[i])
-        return i
-      end
-    end
-  end
-
   function produce_honey(
     meadow::AbstractMatrix{Float64}, 
     flower_size::Int, 
     hive::Vector{Bee}, 
     nectar_estimator::Function, 
     flower_visits_limit::Int, 
-    stopCriterion::Function
+    stopCriterion::Function,
+    selection::Function,
+    selection_param::Float64
   )
     beest_flower::Vector{Int} = shuffle(collect(1:flower_size))
     beest_nectar::Float64 = nectar_estimator(beest_flower, meadow)
@@ -75,7 +68,7 @@ module ArtificialBeeColony
     while (true)
       stop_stat = updateStopStat(stop_stat)
       if (stopCheck(stop_stat)) return beest_flower, beest_nectar end
-      println("Stat: $stop_stat")
+      # println("Stat: $stop_stat")
 
       # printDebug("Employees working . . .")
       for (beendex, employee_bee) in enumerate(hive) #💼
@@ -105,7 +98,7 @@ module ArtificialBeeColony
       nectars = [bee.nectar for bee in hive]
       for (beendex, onlooker_bee) in enumerate(hive) #👀
         # Choose one good bee
-        j = stochastic_rws(nectars)
+        j = selection(nectars, selection_param)
         chosen_bee = hive[j]
         old_flower::Vector{Int} = copy(chosen_bee.flower)
         old_nectar::Float64 = chosen_bee.nectar

@@ -3,11 +3,16 @@ Urgent:
 [ ] Rozdzielenie faz na funkcje <- Maciek
 [ ] Badania:
     [ ] Proporcje ruchów przypisanych do pszczółek (np. 30% swap, 10% insert, 60% invert):
-        [ ] wagedSwarm (procentowo i jakie ruchy <- Hubert
-        [ ] fix randomSwarm <- Razem
-        [ ] singleSwarm (przekazana funkcja move i robi z tego swarma <- Hubert
+        [x] wagedSwarm (procentowo i jakie ruchy <- Hubert
+        [x] fix randomSwarm <- Razem
+        [x] singleSwarm (przekazana funkcja move i robi z tego swarma) <- Hubert
     [ ] Ilość pszczółek <- Hubert
     [ ] Limit kwiatka w zależności od liczby pszczółek/wielkości problemu (?) <- Hubert
+
+[x] Inne metody selekcji:
+    [x] Turniej
+    [x] Ruletka
+
 
 Mniej urgent:
 [ ] Krzyżowanie:
@@ -19,6 +24,3 @@ Mniej urgent:
         [ ] Ustalona metoda
         [ ] Losowana metoda
         [ ] Ważone? metody
-[ ] Inne metody selekcji:
-    [ ] Turniej (?)
-    [x] Ruletka
