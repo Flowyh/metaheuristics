@@ -88,6 +88,7 @@ function main(args::Array{String})
         usage()
         exit(1)
       end
+      setDebug(false)
       beeTSPTest(
         other_funcs,
         parse(Int, args[10]),
@@ -120,6 +121,7 @@ function main(args::Array{String})
         usage()
         exit(1)
       end
+      setDebug(false)  
       beeRandomTest(
         other_funcs,
         parse(Int, args[10]),

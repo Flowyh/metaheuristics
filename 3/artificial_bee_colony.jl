@@ -9,7 +9,7 @@ module ArtificialBeeColony
   include("./swarms.jl")
   include("./selection.jl")
 
-  export beeror
+  export beeror, setDebug
   export Bee, random_swarm, invert_swarm, insert_swarm, swap_swarm, prepared_swarm, produce_honey
   export openTSPFile, structToDict
   export timeCriterion, iterationsCriterion
@@ -25,6 +25,9 @@ module ArtificialBeeColony
   debug = true
   function printDebug(str::String)
     if (debug) println(str) end
+  end
+  function setDebug(flag::Bool)
+    global debug = flag
   end
 
   mutable struct Bee #🐝
