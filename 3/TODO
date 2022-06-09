@@ -1,13 +1,13 @@
 Urgent:
-[ ] Wątki na każdą fazę <- Maciek
-[ ] Rozdzielenie faz na funkcje <- Maciek
-[ ] Badania:
-    [ ] Proporcje ruchów przypisanych do pszczółek (np. 30% swap, 10% insert, 60% invert):
+[x] Wątki na każdą fazę <- Maciek
+[x] Rozdzielenie faz na funkcje <- Maciek
+[x] Badania:
+    [x] Proporcje ruchów przypisanych do pszczółek (np. 30% swap, 10% insert, 60% invert):
         [x] wagedSwarm (procentowo i jakie ruchy <- Hubert
         [x] fix randomSwarm <- Razem
         [x] singleSwarm (przekazana funkcja move i robi z tego swarma) <- Hubert
-    [ ] Ilość pszczółek <- Hubert
-    [ ] Limit kwiatka w zależności od liczby pszczółek/wielkości problemu (?) <- Hubert
+    [x] Ilość pszczółek <- Hubert
+    [x] Limit kwiatka w zależności od liczby pszczółek/wielkości problemu (?) <- Hubert
 
 [x] Inne metody selekcji:
     [x] Turniej

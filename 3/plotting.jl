@@ -14,7 +14,7 @@ const alg_names = Dict(
 )
 
 const modes = Dict(
-  "move" => "Move type to generate function comparison for Artificial Bee Colony",
+  "swarm" => "Swarm type to generate function comparison for Artificial Bee Colony",
   "beesCount" => "Bees count value comparison for Artificial Bee Colony",
   "visitsLimit" => "Visits limit comparison for Artificial Bee Colony",
   "selection" => "Selection algorithm comparison for Artificial Bee Colony",
@@ -23,14 +23,14 @@ const modes = Dict(
 )
 
 function beesParameter(f_split, mode::String)
-  if (mode == "move")
+  if (mode == "swarm")
     return f_split[7]
   elseif (mode == "beesCount")
     return f_split[3]
   elseif (mode == "visitsLimit")
     return f_split[6]
   elseif (mode == "selection")
-    return f_split[8]
+    return "$(f_split[8])_$(f_split[9])"
   elseif (mode == "stop")
     return f_split[4]
   elseif (mode == "threads")
@@ -155,7 +155,7 @@ function plots(step::Int, s_end::Int, k::Int, algs::Array{String}, date::String,
     push!(avg_best_path, best)
   end
   if (length(algs) == 1) return end
-  algs_prefix = join(algs, "_")
+  algs_prefix = "all"
   isdir("./plots/$algs_prefix") || mkdir("./plots/$algs_prefix")
   if (length(avg_prd) > 0) 
     plt_avg_prd = plot_data(ns1, avg_prd, step, s_end, permutedims(algs), "Number of nodes", "PRD", "PRD for algs [k=$k]", 800, 600)
@@ -197,6 +197,7 @@ function main(args::Array{String})
       if (args[6] in keys(modes)) mode = args[6]
       else mode = "none" end
     end
+    println(mode)
     plots(step, s_end, k, algs, date, mode)
   catch e
     println("Error")
