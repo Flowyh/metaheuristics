@@ -13,14 +13,9 @@ Urgent:
     [x] Turniej
     [x] Ruletka
 
-
-Mniej urgent:
-[ ] Krzyżowanie:
-    [ ] Implementacja różnych metod
-    [ ] Zbadanie gdzie najlepiej dać krzyżowanie:
-        [ ] W usuwaniu słabych kwiatków (?)
-        [ ] Po ostatniej fazie? (scouts)
-    [ ] Jak krzyżować:
-        [ ] Ustalona metoda
-        [ ] Losowana metoda
-        [ ] Ważone? metody
+[ ] Sprawozdanie:
+    [ ] Bardziej widoczne ploty dla testów 1-7 (wyciągnąć pojedyncze jsony i splotować)
+    [ ] Ładne ploty dla dużych testów (dużo sekund i duże rozmiary)
+    [ ] Napisanie sprawozdania i wniosków
+    [ ] Załączyć screeny z wilcoxona
+    [ ] Dodać fajną pszczułke
