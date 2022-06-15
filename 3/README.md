@@ -14,7 +14,7 @@ Etap 3 polegał na implementacji algorytmu populacyjnego (wybraliśmy algorytm o
 
 Implementacja Sztucznej Kolonii Pszczół znajduje się w: [./artificial_bee_colony.jl](./artificial_bee_colony.jl).
 
-Badania przeprowadziliśmy na bibliotece [TSPLIB](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/), która zawiera przykładowe dane dla symetrycznego problemu komiwojażera, oraz na losowo generowanych grafach.
+Badania przeprowadziliśmy na bibliotece [TSPLIB](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/), która zawiera przykładowe dane dla symetrycznego problemu komiwojażera.
 
 Funkcje generujące grafy o symetrycznych (euklidesowych) i asymetrycznych (losowych) wagach znajdują się w pliku [generate.jl](../1/generate.jl).
 
