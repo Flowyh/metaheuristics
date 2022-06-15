@@ -24,7 +24,7 @@ Badania przeproawdziliśmy na [takich samych instancjach TSPLIB](./testing.jl#:~
 
 Badania polegały na uruchomieniu Artifical Bee Colony dla danych parametrów, a następnie zbadaniu najlepszej wartości funkcji celu oraz PRD dla danego problemu.
 
-Aby Tabu Search działał optymalnie, musieliśmy go najpierw "nastroić" (dobrać odpowiednie parametry).
+Aby nasz algorytm działał optymalnie, musieliśmy go najpierw "nastroić" (dobrać odpowiednie parametry).
 
 W naszym przypadku strojenie polegało na włączaniu heurystyki dla zadanych parametrów, porównaniu wartości PRD i wybranie najlepszych parametrów dla przyszłych testów.
 
