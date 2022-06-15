@@ -1,4 +1,4 @@
-### Sprawozdanie [Etap 1](http://radoslaw.idzikowski.staff.iiar.pwr.wroc.pl/instruction/meta3.pdf)
+### Sprawozdanie [Etap 3](http://radoslaw.idzikowski.staff.iiar.pwr.wroc.pl/instruction/meta3.pdf)
 
 | Przedmiot  | Algorytmy metaheurystyczne                   |
 | ---------- | -------------------------------------------- |
