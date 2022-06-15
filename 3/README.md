@@ -46,7 +46,7 @@ Kiedy wyznaczyliśmy optymalne parametry dla naszej heurystyki porównaliśmy j�
 
 ### Wyniki
 
-Wyniki testów algorithmsTest oraz randomGraphsTest zapisywaliśmy do formatu .json w folderze [./results/jsons](./results/jsons/).
+Wyniki testów algorithmsTest oraz randomGraphsTest zapisywaliśmy do formatu .json w odpowiedniach folderach w [./results/experiments](./results/experiments/).
 
 Pliki wynikowe zawierają wartości podanych wyżej statystyk (czas, prd, najlepsza wartość funkcji celu) rozdzielone według ilości węzłów dla zadanego problemu.
 
@@ -56,25 +56,29 @@ Dla wygenerowanych wyników napisaliśmy program, który sczytuje pliki .json i 
 
 Kod źródłowy można znaleźć w pliku [./plotting.jl](./plotting.jl).
 
-Dla wyników z folderu [./jsons](./jsons/) wygenerowaliśmy wykresy dla każdego algorytmu. Znajdują się one w folderze [./plots](./plots/).
+Dla wyników z folderu [./results/experiments](./results/experiments) wygenerowaliśmy wykresy dla każdego algorytmu. Znajdują się one w folderze [./final_plots](./final_plots/).
 
 ### Wnioski
 
 #### Strojenie
 
-##### Najlepsza ilość pszczół (PRD):
+##### Najlepsza liczba pszczół (PRD):
 
 ![prd for bees count](./results/experiments/1/plots/all/all-k1-prd-avgs.png)
 
-Jak widzimy, im **mniejsza** ilość pszczółek, tym lepsze znajdywane rozwiązania.
+Omylnie możnaby stwierdzić, że im **mniejsza** liczba pszczółek, tym lepsze znajdywane rozwiązania.
 
-Jednakże bliskie optymalnemu są też liczby pszczółek do 500 generowanych pszczółek.
+Wielkość badanych problemów z TSPLIB była na tyle mała, że pszczółki dość szybko znajdywały optymalne rozwiązania. Jeśli badalibyśmy problemy, dla których liczba węzłów jest rzędu kilku tysięcy mała liczba pszczół mogłaby doprowadzić do zbyt wczesnej stagnacji algorytmu.
+
+Dlatego, aby zapobiec temu zdecydowaliśmy się na wybranie stałej liczby **1000** pszczół w naszym roju.
 
 ##### Limit odwiedzeń pojedyńczego kwiatka (PRD):
 
 ![prd for visits limit](./results/experiments/2/plots/all/all-k20-prd-avgs.png)
 
-Dla limitu **100** i **500** widać znaczne różnice. Dla większych ilości limitów **nie widać** większej różnicy.
+Tak samo jak w przypadku liczby pszczół - mały limit odwiedzeń każdego kwiatka może doprowadzić do przedwczesnego zresetowania rozwiązania. Dlatego trzeba wybrać odpowiedni dużą wartość, aby pszczółki miały szansę poszukać lepszego rozwiązania w obecnym sąsiedstwie.
+
+Przyjęliśmy ok. **10000** lub **100000** maksymalnej liczby odwiedzeń na kwiatek.
 
 ##### Limit odwiedzeń pojedyńczego kwiatka względem ilości pszczół (PRD):
 
@@ -88,7 +92,7 @@ Dla dobranych ilości generowania pszczółek względem limitu odwiedzeń widać
 
 Wbrew naszym przewidywaniom, najlepszym rodzajem selekcji okazał się być **tournament**, a nie **ulepszona ruletka**.
 
-Widać również, że im **mniejszy paramter** w turnieju tym lepsze wyniki.
+Widać również, że im **mniej wybieranych kandydatów** do turnieju tym lepsze wyniki.
 
 #### Odchylenie od najlepszego rozwiązania użyte w mechanizmie aspiracji (PRD):
 
@@ -111,7 +115,7 @@ Na wykresie możemy zobaczyć, że dla problemów mających około **100** węz�
 
 #### Liczba wątków a liczba pszczół (PRD):
 
-Zbadaliśmy kiedy opłaca się przełączać na wielowątkowość, ale tym razem zmienialiśmy ilość generowanych pszczół kolejno dla **1000**, **5000**, **10 000**.
+Zbadaliśmy kiedy opłaca się przełączać na wielowątkowość, ale tym razem zmienialiśmy liczba generowanych pszczół kolejno dla **1000**, **5000**, **10 000**.
 
 ![time for number of threads, 1000 beesCount](./results/experiments/7/plots/1000/all/all-k1-prd-avgs.png)
 
@@ -131,7 +135,7 @@ Dla **10 000** wygenerowanych pszczół najlepiej będzie zachować sie tak samo
 ![artificial bee colony vs tabu prd](./results/experiments/tabu-2000it/plots/all/all-k50-prd-avgs.png)
 ![artificial bee colony vs tabu time](./results/experiments/tabu-2000it/plots/all/all-k50-time-avgs.png)
 
-W bezpośrednim starciu testowany algorytm nie ma szans. Jedynym atutem wydaje się być utrzymująca funkcja czasu, gdyż dla tabu Searcha znacznie on wzrasta w porównaniu do naszego algorytmu.
+W bezpośrednim starciu kolonia pszczół przegrała z Tabu Searchem. Dzieje się tak, ponieważ sprawdzaliśmy na tyle małą liczbę iteracji, że nie pozwoliło to pszczółkom na odnalezienie wystarczająco dobrych wyników. Nasza implementacja Tabu Searcha jest na tyle dobra, że ciężko było ją pobić dla krótkich testów.
 
 #### Porównanie ze wszystkimi algorytmami
 

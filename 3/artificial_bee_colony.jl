@@ -32,9 +32,9 @@ module ArtificialBeeColony
 
   mutable struct Bee #🐝
     flower::Vector{Int} #🌸 Current solution
-    flower_visits::Int # Number of flights to current solution
+    flower_visits::Int #💼 Number of flights to current solution
     nectar::Float64 #🍯 Objective function value
-    fly::Function # Move
+    fly::Function #✈️ Move
     wings::Function #💸 Accelerated distance
   end
 
@@ -52,7 +52,6 @@ module ArtificialBeeColony
       # New neighbouring flower
       (x, y) = sample(1:flower_size, 2, replace=false)
       new_flower::Vector{Int} = employee_bee.fly(old_flower, x, y)
-      # new_nectar::Float64 = employee_bee.wings(new_flower, (x, y, old_nectar), meadow)
       new_nectar::Float64 = nectar_estimator(new_flower, meadow)
       if (new_nectar < old_nectar)
         employee_bee.flower_visits = 0
@@ -80,7 +79,6 @@ module ArtificialBeeColony
       # New neighbouring flower
       (x, y) = sample(1:flower_size, 2, replace=false)
       new_flower::Vector{Int} = onlooker_bee.fly(old_flower, x, y)
-      # new_nectar::Float64 = onlooker_bee.wings(new_flower, (x, y, old_nectar), meadow)
       new_nectar::Float64 = nectar_estimator(new_flower, meadow)
       if (new_nectar < old_nectar)
         onlooker_bee.flower_visits = 0
@@ -177,7 +175,7 @@ module ArtificialBeeColony
       # println("Stat: $stop_stat")
 
       # printDebug("Employees working . . .")
-      @floop for (i, j) in ranges #💼
+      @floop for (i, j) in ranges #👨‍💼
         (fl_e_flower, fl_e_nectar) = employee_bees(hive[i:j], meadow, flower_size, nectar_estimator)
         @reduce() do (e_f = Vector{Int}(undef, 0); fl_e_flower), (e_n = typemax(Float64); fl_e_nectar)
           if (fl_e_nectar < e_n)
