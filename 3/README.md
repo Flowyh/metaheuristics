@@ -40,9 +40,9 @@ Po kolei testowaliśmy:
 
 Wszystkie badania uruchamiane są z programu [./main.jl](./main.jl) przy pomocy odpowiednio dobranych argumentów w linii komend (więcej informacji znajduje się w pliku).
 
-Dla ułatwienia, przygotowaliśmy skrypty w bashu ([./tests.sh](./tests.sh), które uruchamiają po kolei powyższe badania strojeniowe.
+Dla ułatwienia, przygotowaliśmy skrypty w bashu [./tests.sh](./tests.sh), które uruchamiają po kolei powyższe badania strojeniowe.
 
-Kiedy wyznaczyliśmy optymalne parametry dla naszej heurystyki porównaliśmy ją z poprzednio zaimplementowanymi heurystykami, które badaliśmy podczas etapu 1 (2-opt, nearest neighbour, repetitive nearest neighbour, k-random, tabu search).
+Kiedy wyznaczyliśmy optymalne parametry dla naszej heurystyki porównaliśmy ją z poprzednio zaimplementowanymi heurystykami, które badaliśmy podczas wcześniejszych etapów (2-opt, nearest neighbour, repetitive nearest neighbour, k-random, tabu search).
 
 ### Wyniki
 
